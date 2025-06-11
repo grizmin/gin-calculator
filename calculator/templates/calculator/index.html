@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gin Ingredients Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-weight: 600;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .recipe-info {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .recipe-info.show {
+            display: block;
+        }
+
+        .recipe-info h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .recipe-info p {
+            color: #424242;
+            line-height: 1.5;
+        }
+
+        .results {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 25px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .results h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .recipe-title {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .ingredient-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .ingredient-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            position: relative;
+        }
+
+        .ingredient-item.optional {
+            border-left-color: #ffc107;
+            background: #fff8e1;
+        }
+
+        .ingredient-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            text-transform: capitalize;
+        }
+
+        .ingredient-amount {
+            font-size: 1.2rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .optional-tag {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #ffc107;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .ingredient-notes {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .abv-info {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .abv-info h4 {
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .abv-amount {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .current-recipe {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .current-recipe h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .base-ingredients {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .base-ingredient {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .no-recipes {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .ingredient-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍸 Gin Ingredients Calculator</h1>
+            <p>Scale your gin recipe to any volume</p>
+        </div>
+
+        <div class="content">
+            {% if recipes %}
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="recipe_select">Select Recipe:</label>
+                    <select id="recipe_select" onchange="onRecipeChange()">
+                        {% for recipe in recipes %}
+                            <option value="{{ recipe.id }}" {% if recipe == default_recipe %}selected{% endif %}>
+                                {{ recipe.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div id="recipe-info" class="recipe-info">
+                    <!-- Recipe description will be populated here -->
+                </div>
+
+                <div class="input-group">
+                    <label for="volume">Desired Volume (liters):</label>
+                    <input type="number" id="volume" value="1" min="0.1" max="100" step="0.1">
+                </div>
+                
+                <button class="calculate-btn" onclick="calculateIngredients()">
+                    Calculate Ingredients
+                </button>
+            </div>
+
+            <div id="results" class="results">
+                <div id="recipe-title" class="recipe-title">
+                    <!-- Recipe name will be populated here -->
+                </div>
+                <h3>📋 Scaled Recipe</h3>
+                <div id="ingredients" class="ingredient-grid">
+                    <!-- Ingredients will be populated here -->
+                </div>
+                <div class="abv-info">
+                    <h4>Required ABV Volume</h4>
+                    <div id="abv-volume" class="abv-amount">0 L</div>
+                </div>
+            </div>
+
+            {% if default_recipe %}
+            <div class="current-recipe">
+                <h3>📖 Current Recipe Details</h3>
+                <div id="current-recipe-content">
+                    <!-- Current recipe details will be populated here -->
+                </div>
+            </div>
+            {% endif %}
+
+            {% else %}
+            <div class="no-recipes">
+                <h3>No Recipes Available</h3>
+                <p>Please contact an administrator to add gin recipes to the system.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        let currentRecipe = null;
+
+        {% if default_recipe %}
+        // Load default recipe on page load
+        window.addEventListener('load', function() {
+            loadRecipeDetails({{ default_recipe.id }});
+        });
+        {% endif %}
+
+        async function onRecipeChange() {
+            const recipeSelect = document.getElementById('recipe_select');
+            const recipeId = recipeSelect.value;
+            
+            if (recipeId) {
+                await loadRecipeDetails(recipeId);
+                // Auto-calculate with new recipe
+                calculateIngredients();
+            }
+        }
+
+        async function loadRecipeDetails(recipeId) {
+            try {
+                const response = await fetch('/get-recipe/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        recipe_id: parseInt(recipeId)
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentRecipe = data.recipe;
+                    displayRecipeInfo(data.recipe);
+                    displayCurrentRecipe(data.recipe);
+                } else {
+                    console.error('Error loading recipe:', data.error);
+                }
+            } catch (error) {
+                console.error('Error loading recipe details:', error);
+            }
+        }
+
+        function displayRecipeInfo(recipe) {
+            const recipeInfoDiv = document.getElementById('recipe-info');
+            
+            if (recipe.description) {
+                recipeInfoDiv.innerHTML = `
+                    <h4>${recipe.name}</h4>
+                    <p>${recipe.description}</p>
+                `;
+                recipeInfoDiv.classList.add('show');
+            } else {
+                recipeInfoDiv.classList.remove('show');
+            }
+        }
+
+        function displayCurrentRecipe(recipe) {
+            const currentRecipeContent = document.getElementById('current-recipe-content');
+            
+            let ingredientsHtml = '';
+            recipe.ingredients.forEach(ingredient => {
+                const optionalText = ingredient.is_optional ? ' (optional)' : '';
+                ingredientsHtml += `
+                    <div class="base-ingredient">
+                        <span><strong>${ingredient.name}${optionalText}:</strong></span>
+                        <span>${ingredient.amount}g</span>
+                    </div>
+                `;
+            });
+
+            currentRecipeContent.innerHTML = `
+                <p>
+                    <strong>Base Volume:</strong> ${recipe.base_volume} liters<br>
+                    <strong>ABV Volume:</strong> ${recipe.abv_volume} liters
+                </p>
+                <div class="base-ingredients">
+                    ${ingredientsHtml}
+                </div>
+            `;
+        }
+
+        async function calculateIngredients() {
+            const volume = parseFloat(document.getElementById('volume').value);
+            const recipeSelect = document.getElementById('recipe_select');
+            const recipeId = recipeSelect.value;
+            
+            if (!volume || volume <= 0) {
+                alert('Please enter a valid volume');
+                return;
+            }
+
+            if (!recipeId) {
+                alert('Please select a recipe');
+                return;
+            }
+
+            try {
+                const response = await fetch('/calculate/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        volume: volume,
+                        recipe_id: parseInt(recipeId)
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayResults(data);
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error calculating ingredients: ' + error.message);
+            }
+        }
+
+        function displayResults(data) {
+            const ingredientsContainer = document.getElementById('ingredients');
+            const abvVolumeElement = document.getElementById('abv-volume');
+            const resultsContainer = document.getElementById('results');
+            const recipeTitleElement = document.getElementById('recipe-title');
+            
+            // Clear previous results
+            ingredientsContainer.innerHTML = '';
+            
+            // Display recipe title
+            recipeTitleElement.textContent = data.recipe_name;
+            
+            // Display scaled ingredients
+            data.scaled_ingredients.forEach(ingredient => {
+                const ingredientDiv = document.createElement('div');
+                ingredientDiv.className = 'ingredient-item';
+                if (ingredient.is_optional) {
+                    ingredientDiv.classList.add('optional');
+                }
+                
+                let notesHtml = ingredient.notes ? `<div class="ingredient-notes">${ingredient.notes}</div>` : '';
+                let optionalTag = ingredient.is_optional ? '<div class="optional-tag">Optional</div>' : '';
+                
+                ingredientDiv.innerHTML = `
+                    ${optionalTag}
+                    <div class="ingredient-name">${ingredient.name}</div>
+                    <div class="ingredient-amount">${ingredient.amount}g</div>
+                    ${notesHtml}
+                `;
+                ingredientsContainer.appendChild(ingredientDiv);
+            });
+            
+            // Display ABV volume
+            abvVolumeElement.textContent = `${data.abv_volume} L`;
+            
+            // Show results
+            resultsContainer.classList.add('show');
+            resultsContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Calculate on Enter key press
+        document.getElementById('volume').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateIngredients();
+            }
+        });
+    </script>
+</body>
+</html>

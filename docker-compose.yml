@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  gin-calculator:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=gin_calculator.settings
+      - DEBUG=True
+      - DATABASE_PATH=/app/db_data/db.sqlite3
+    volumes:
+      # Mount specific directories for data persistence
+      - gin-calculator-db:/app/db_data
+      - gin-calculator-media:/app/media
+    restart: unless-stopped
+
+volumes:
+  gin-calculator-db:
+  gin-calculator-media:

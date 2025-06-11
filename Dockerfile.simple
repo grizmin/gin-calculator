@@ -1,0 +1,55 @@
+# Use Python Alpine as base image
+FROM python:3.11-alpine
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV DJANGO_SETTINGS_MODULE=gin_calculator.settings
+
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apk update && apk add --no-cache \
+    gcc \
+    musl-dev \
+    sqlite \
+    sqlite-dev \
+    && rm -rf /var/cache/apk/*
+
+# Copy requirements first for better caching
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy project
+COPY . /app/
+
+# Create necessary directories
+RUN mkdir -p /app/staticfiles
+RUN mkdir -p /app/media
+
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Run migrations
+RUN python manage.py migrate
+
+# Create default admin user
+RUN echo "from django.contrib.auth.models import User; \
+if not User.objects.filter(is_superuser=True).exists(): \
+    User.objects.create_superuser('admin', 'admin@example.com', 'admin123'); \
+    print('✅ Admin user created')" | python manage.py shell
+
+# Create default recipe using management command
+RUN python manage.py create_default_recipe || echo "⚠️ Could not create default recipe - will be created on first admin login"
+
+# Expose port
+EXPOSE 8000
+
+# Create a non-root user
+RUN adduser -D -s /bin/sh gin_user
+RUN chown -R gin_user:gin_user /app
+USER gin_user
+
+# Command to run the application
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
