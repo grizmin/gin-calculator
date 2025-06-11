@@ -1,0 +1,130 @@
+name: Build and Deploy Docker Image
+
+on:
+  # Automatic builds on code changes
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+  
+  # Manual deployment trigger
+  workflow_dispatch:
+    inputs:
+      image_name:
+        description: 'Docker image name'
+        required: true
+        default: 'gin-calculator'
+      deploy_to_dockerhub:
+        description: 'Deploy to Docker Hub?'
+        type: boolean
+        default: false
+
+env:
+  IMAGE_NAME: gin-calculator
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+      image_digest: ${{ steps.build.outputs.digest }}
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ github.event.inputs.image_name || env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=raw,value=latest,enable={{is_default_branch}}
+          type=raw,value={{date 'YYYYMMDD-HHmmss'}}
+    
+    - name: Build Docker image
+      id: build
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        push: false
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+    
+    - name: Test Docker image
+      run: |
+        # Get the first tag from the metadata
+        IMAGE_TAG=$(echo "${{ steps.meta.outputs.tags }}" | head -n1)
+        echo "Testing image: $IMAGE_TAG"
+        
+        # Run the container for testing
+        docker run -d --name test-gin-calc -p 8080:8000 $IMAGE_TAG
+        
+        # Wait for startup
+        sleep 15
+        
+        # Test the application
+        curl -f http://localhost:8080/ || (docker logs test-gin-calc && exit 1)
+        
+        # Cleanup
+        docker stop test-gin-calc
+        docker rm test-gin-calc
+        
+        echo "✅ Tests passed!"
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_to_dockerhub == 'true'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+    - name: Extract metadata for Docker Hub
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.image_name || env.IMAGE_NAME }}
+        tags: |
+          type=raw,value=latest
+          type=raw,value={{date 'YYYYMMDD-HHmmss'}}
+    
+    - name: Build and push to Docker Hub
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+    
+    - name: Output deployment info
+      run: |
+        echo "🚀 Successfully deployed to Docker Hub!"
+        echo "📦 Repository: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.image_name || env.IMAGE_NAME }}"
+        echo "🏷️ Tags pushed:"
+        echo "${{ steps.meta.outputs.tags }}" | sed 's/^/  - /'
+        echo ""
+        echo "🐳 Pull command:"
+        echo "docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.inputs.image_name || env.IMAGE_NAME }}:latest"
