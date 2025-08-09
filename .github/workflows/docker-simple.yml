@@ -54,12 +54,21 @@ jobs:
       with:
         context: .
         file: ./Dockerfile
-        push: true
+        push: false
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
+        
+    - name: Verify Docker image exists
+      run: |
+        IMAGE_TAG=$(echo "${{ steps.meta.outputs.tags }}" | head -n1)
+        echo $IMAGE_TAG
+        docker images | grep $IMAGE_TAG || echo "Image not found locally"
     
+    - name: List Docker images for debugging
+      run: docker images
+
     - name: Test Docker image
       run: |
         # Get the first tag from the metadata
