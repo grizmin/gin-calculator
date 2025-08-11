@@ -119,11 +119,12 @@ jobs:
           type=raw,value={{date 'YYYYMMDD-HHmmss'}}
     
     - name: Build and push to Docker Hub
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         context: .
         file: ./Dockerfile
         push: true
+        platforms: linux/amd64,linux/arm64
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
