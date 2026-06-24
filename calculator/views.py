@@ -56,6 +56,18 @@ def calculate(request):
             # Calculate scaled ABV volume
             scaled_abv_volume = round(recipe.abv_volume * scale_factor, 2)
             
+            # Calculate spirit needed and water to add
+            # The calculation:
+            # Spirit needed = (desired_volume * target_abv_percentage) / 100 / (input_spirit_abv / 100)
+            # Water to add = desired_volume - spirit_needed
+            # Note: Water amount is estimated since distillation output varies per brew
+            input_spirit_abv = float(data.get('input_spirit_abv', 40.0))  # Default to 40% if not provided
+            target_abv_percentage = float(data.get('target_abv', recipe.target_abv_percentage or 40.0))
+            
+            # FIXED: Corrected formula - input_spirit_abv is percentage (e.g. 96), not decimal (0.96)
+            spirit_needed = (desired_volume * target_abv_percentage / 100) / (input_spirit_abv / 100)
+            water_to_add = desired_volume - spirit_needed
+            
             return JsonResponse({
                 'success': True,
                 'recipe_name': recipe.name,
@@ -63,6 +75,8 @@ def calculate(request):
                 'scaled_ingredients': scaled_ingredients,
                 'abv_volume': scaled_abv_volume,
                 'scale_factor': round(scale_factor, 2),
+                'spirit_needed': round(spirit_needed, 2),
+                'water_to_add': round(water_to_add, 2),
             })
             
         except (ValueError, json.JSONDecodeError) as e:

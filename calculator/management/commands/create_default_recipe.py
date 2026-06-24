@@ -28,6 +28,7 @@ class Command(BaseCommand):
             description="A traditional London Dry gin recipe with juniper, coriander, and complementary botanicals.",
             base_volume=1.0,
             abv_volume=1.15,
+            target_abv_percentage=40.0,
             is_active=True,
             is_default=True,
             created_by=admin_user
