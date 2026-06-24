@@ -1,0 +1,67 @@
+name: Tests
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: "3.13"
+
+jobs:
+  # Django system check + unit tests (calculator/tests.py).
+  # Uses Django's own throwaway test database, so no fixtures needed.
+  unit-tests:
+    name: Django check & unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Django system check
+        run: python manage.py check
+
+      # Scoped to the `calculator` app: the top-level `tests/` package holds
+      # Playwright tests (run separately in ui-tests), which Django's test
+      # runner cannot import.
+      - name: Run unit tests
+        run: python manage.py test calculator --verbosity 2
+
+  # Playwright UI tests (tests/test_ui.py). conftest.py starts its own
+  # `manage.py runserver` against the committed db.sqlite3, which holds the
+  # default-recipe sample data the UI assertions depend on.
+  ui-tests:
+    name: Playwright UI tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest "playwright==1.60.0"
+
+      - name: Install Playwright browser
+        run: python -m playwright install --with-deps chromium
+
+      - name: Apply migrations
+        run: python manage.py migrate --noinput
+
+      - name: Run UI tests
+        run: pytest tests/ --verbosity 2

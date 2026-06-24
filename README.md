@@ -30,11 +30,8 @@ The fastest way to get started:
 # Clone and navigate to the project
 cd ~/Projects/gin-calculator
 
-# Make build script executable
-chmod +x build-and-run.sh
-
 # Build and run with Docker
-./build-and-run.sh
+docker-compose up
 ```
 
 **Access the app**: http://localhost:8000  
@@ -49,11 +46,11 @@ For detailed Docker instructions, see [DOCKER.md](DOCKER.md)
    cd ~/Projects/gin-calculator
    ```
 
-2. **Create a virtual environment (recommended):**
+2. **Activate the project's pyenv environment:**
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pyenv activate gin
    ```
+   (Don't create a new `venv/` — the env is managed with pyenv.)
 
 3. **Install dependencies:**
    ```bash
@@ -118,17 +115,22 @@ gin-calculator/
 │   ├── urls.py
 │   ├── wsgi.py
 │   └── asgi.py
-└── calculator/
-    ├── __init__.py
-    ├── apps.py
-    ├── views.py
-    ├── urls.py
-    ├── models.py
-    ├── admin.py
-    ├── tests.py
-    └── templates/
-        └── calculator/
-            └── index.html
+├── calculator/
+│   ├── __init__.py
+│   ├── apps.py
+│   ├── views.py
+│   ├── urls.py
+│   ├── models.py
+│   ├── admin.py
+│   ├── tests.py
+│   ├── management/commands/   # recipe-seeding commands
+│   ├── static/calculator/     # calculator.css
+│   └── templates/
+│       └── calculator/
+│           └── index.html
+└── tests/                     # Playwright UI tests (run with pytest)
+    ├── conftest.py
+    └── test_ui.py
 ```
 
 ## API Endpoints
@@ -161,3 +163,6 @@ gin-calculator/
   ```bash
   python manage.py create_default_recipe
   ```
+- **create_custom_default_recipe**: Creates a custom default recipe
+- **create_famous_recipes**: Seeds a set of well-known gin recipes from
+  `calculator/fixtures/famous_gin_recipes.json`
