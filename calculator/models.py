@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class GinRecipe(models.Model):
@@ -7,6 +8,11 @@ class GinRecipe(models.Model):
     description = models.TextField(blank=True)
     base_volume = models.FloatField(default=1.0, help_text="Base volume in liters")
     abv_volume = models.FloatField(help_text="ABV volume in liters for base volume")
+    target_abv_percentage = models.FloatField(
+        default=40.0,
+        validators=[MinValueValidator(10.0), MaxValueValidator(99.0)],
+        help_text="Target ABV % of the finished gin (10–99%)"
+    )
     is_active = models.BooleanField(default=True)
     is_default = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -23,6 +29,7 @@ class GinRecipe(models.Model):
         # Ensure only one default recipe
         if self.is_default:
             GinRecipe.objects.filter(is_default=True).update(is_default=False)
+        
         super().save(*args, **kwargs)
 
 

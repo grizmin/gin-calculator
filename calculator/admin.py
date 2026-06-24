@@ -11,7 +11,7 @@ class RecipeIngredientInline(admin.TabularInline):
 
 @admin.register(GinRecipe)
 class GinRecipeAdmin(admin.ModelAdmin):
-    list_display = ['name', 'base_volume', 'abv_volume', 'is_active', 'is_default', 'created_by', 'created_at']
+    list_display = ['name', 'base_volume', 'abv_volume', 'target_abv_percentage', 'is_active', 'is_default', 'created_by', 'created_at']
     list_filter = ['is_active', 'is_default', 'created_by', 'created_at']
     search_fields = ['name', 'description']
     readonly_fields = ['created_at', 'updated_at']
@@ -22,7 +22,7 @@ class GinRecipeAdmin(admin.ModelAdmin):
             'fields': ('name', 'description')
         }),
         ('Recipe Details', {
-            'fields': ('base_volume', 'abv_volume')
+            'fields': ('base_volume', 'abv_volume', 'target_abv_percentage')
         }),
         ('Settings', {
             'fields': ('is_active', 'is_default')
