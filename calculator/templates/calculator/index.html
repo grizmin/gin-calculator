@@ -134,19 +134,6 @@
 
     </section>
 
-    {% if default_recipe %}
-    <!-- Reference recipe — full width below both columns -->
-    <section class="card" style="grid-column:1/-1;" aria-label="Base recipe reference">
-      <div class="card-header">
-        <span class="card-icon" aria-hidden="true">📖</span>
-        <h2>Base recipe reference</h2>
-      </div>
-      <div class="card-body">
-        <div id="reference-recipe-content"></div>
-      </div>
-    </section>
-    {% endif %}
-
     {% else %}
     <div class="empty-state" style="grid-column:1/-1;">
       <div class="empty-state-icon" aria-hidden="true">🌿</div>
@@ -219,7 +206,6 @@
       currentRecipe = data.recipe;
        renderRecipeImage(data.recipe);
        renderRecipeDescription(data.recipe);
-       renderReferenceRecipe(data.recipe);
 
       const targetInput = document.getElementById('target_abv');
       if (targetInput && data.recipe.target_abv_percentage) {
@@ -266,39 +252,6 @@
     }
   }
 
-  function renderReferenceRecipe(recipe) {
-    const el = document.getElementById('reference-recipe-content');
-    if (!el) return;
-
-    const metaHtml = `
-      <div class="meta-row">
-        <div class="meta-item">
-          <span class="meta-label">Base volume</span>
-          <span class="meta-value">${recipe.base_volume} L</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">ABV volume</span>
-          <span class="meta-value">${recipe.abv_volume} L</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Target ABV</span>
-          <span class="meta-value">${recipe.target_abv_percentage || 0}%</span>
-        </div>
-      </div>`;
-
-    const rowsHtml = recipe.ingredients.map(ing => {
-      const opt = ing.is_optional
-        ? ' <span class="ref-optional">(opt)</span>'
-        : '';
-      return `<div class="reference-row">
-        <span>${escHtml(ing.name)}${opt}</span>
-        <span>${ing.amount} g</span>
-      </div>`;
-    }).join('');
-
-    el.innerHTML = metaHtml + '<div class="reference-grid">' + rowsHtml + '</div>';
-  }
-
   function calculateIngredients() {
     const volume = parseFloat(document.getElementById('volume').value);
     const recipeId = document.getElementById('recipe_select').value;
@@ -340,6 +293,7 @@
         <div class="ingredient-row-right">
           ${badge}
           <span class="ingredient-amount">${ing.amount}</span>
+          <span class="ingredient-base-amount" onmouseenter="positionTooltip(this)" onmouseleave="hideTooltip(this)"><span class="tooltip-text">Base recipe (1L)</span> / ${ing.base_amount}</span>
           <span class="ingredient-unit">g</span>
         </div>
       </div>`;
@@ -363,6 +317,23 @@
     return String(str)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;')
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function positionTooltip(el) {
+    const tip = el.querySelector('.tooltip-text');
+    if (!tip) return;
+    const rect = el.getBoundingClientRect();
+    tip.style.setProperty('--tooltip-top', (rect.top - 8) + 'px');
+    tip.style.setProperty('--tooltip-left', (rect.left + rect.width / 2) + 'px');
+    tip.style.opacity = '1';
+    tip.style.visibility = 'visible';
+  }
+
+  function hideTooltip(el) {
+    const tip = el.querySelector('.tooltip-text');
+    if (!tip) return;
+    tip.style.opacity = '0';
+    tip.style.visibility = 'hidden';
   }
 
   document.getElementById('volume').addEventListener('keydown', e => {

@@ -8,7 +8,7 @@ import json
 def index(request):
     """Main calculator page"""
     # Get all active recipes
-    recipes = GinRecipe.objects.filter(is_active=True).prefetch_related('ingredients')
+    recipes = GinRecipe.objects.filter(is_active=True).prefetch_related('ingredients__ingredient')
     
     # Get default recipe or first available
     default_recipe = GinRecipe.objects.filter(is_default=True, is_active=True).first()
@@ -44,13 +44,14 @@ def calculate(request):
             
             # Scale all ingredients
             scaled_ingredients = []
-            for ingredient in recipe.ingredients.all():
-                scaled_amount = round(ingredient.amount * scale_factor, 2)
+            for ri in recipe.ingredients.select_related('ingredient').all():
+                scaled_amount = round(ri.amount * scale_factor, 2)
                 scaled_ingredients.append({
-                    'name': ingredient.name,
+                    'name': ri.ingredient.name,
                     'amount': scaled_amount,
-                    'is_optional': ingredient.is_optional,
-                    'notes': ingredient.notes
+                    'base_amount': ri.amount,
+                    'is_optional': ri.is_optional,
+                    'notes': ri.notes
                 })
             
             # Calculate scaled ABV volume
@@ -105,12 +106,12 @@ def get_recipe(request):
                 })
             
             ingredients = []
-            for ingredient in recipe.ingredients.all():
+            for ri in recipe.ingredients.select_related('ingredient').all():
                 ingredients.append({
-                    'name': ingredient.name,
-                    'amount': ingredient.amount,
-                    'is_optional': ingredient.is_optional,
-                    'notes': ingredient.notes
+                    'name': ri.ingredient.name,
+                    'amount': ri.amount,
+                    'is_optional': ri.is_optional,
+                    'notes': ri.notes
                 })
             
             return JsonResponse({

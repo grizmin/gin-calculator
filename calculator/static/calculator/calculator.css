@@ -696,3 +696,42 @@ body {
   object-fit: contain;
   display: block;
 }
+
+/* ── Merged ingredient amounts (calculated / base) ── */
+.ingredient-base-amount {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+  cursor: help;
+  position: relative;
+}
+
+.ingredient-base-amount:hover {
+  text-decoration: underline dotted var(--color-border-subtle);
+}
+
+.ingredient-base-amount:hover .tooltip-text {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.tooltip-text {
+  position: fixed;
+  top: var(--tooltip-top, 0);
+  left: var(--tooltip-left, 0);
+  transform: translateX(-50%) translateY(-4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: none;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  pointer-events: none;
+  z-index: 100;
+}

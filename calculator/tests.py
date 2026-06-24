@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from calculator.models import GinRecipe, RecipeIngredient
+from calculator.models import GinRecipe, Ingredient, RecipeIngredient
 from django.contrib.auth.models import User
 
 class CalculatorViewsTest(TestCase):
@@ -24,17 +24,20 @@ class CalculatorViewsTest(TestCase):
         )
         
         # Add ingredients to recipe 1
+        juniper_berries = Ingredient.objects.create(name="Juniper berries")
+        coriander_seeds = Ingredient.objects.create(name="Coriander seeds")
+
         RecipeIngredient.objects.create(
             recipe=self.recipe1,
-            name=" juniper berries",
+            ingredient=juniper_berries,
             amount=20.0,
             is_optional=False,
             notes=""
         )
-        
+
         RecipeIngredient.objects.create(
             recipe=self.recipe1,
-            name="coriander seeds",
+            ingredient=coriander_seeds,
             amount=10.0,
             is_optional=False,
             notes=""

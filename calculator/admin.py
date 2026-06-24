@@ -1,12 +1,19 @@
 from django.contrib import admin
-from .models import GinRecipe, RecipeIngredient
+from .models import GinRecipe, Ingredient, RecipeIngredient
+
+
+@admin.register(Ingredient)
+class IngredientAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    search_fields = ['name']
 
 
 class RecipeIngredientInline(admin.TabularInline):
     model = RecipeIngredient
     extra = 1
-    fields = ['name', 'amount', 'is_optional', 'notes', 'order']
-    ordering = ['order', 'name']
+    fields = ['ingredient', 'amount', 'is_optional', 'notes', 'order']
+    autocomplete_fields = ['ingredient']
+    ordering = ['order', 'ingredient__name']
 
 
 @admin.register(GinRecipe)
@@ -16,7 +23,7 @@ class GinRecipeAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
     readonly_fields = ['created_at', 'updated_at']
     inlines = [RecipeIngredientInline]
-    
+
     fieldsets = (
         ('Basic Information', {
             'fields': ('name', 'description')
@@ -32,7 +39,7 @@ class GinRecipeAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         })
     )
-    
+
     def save_model(self, request, obj, form, change):
         if not change:  # Only set created_by on creation
             obj.created_by = request.user
@@ -41,7 +48,8 @@ class GinRecipeAdmin(admin.ModelAdmin):
 
 @admin.register(RecipeIngredient)
 class RecipeIngredientAdmin(admin.ModelAdmin):
-    list_display = ['recipe', 'name', 'amount', 'is_optional', 'order']
+    list_display = ['recipe', 'ingredient', 'amount', 'is_optional', 'order']
     list_filter = ['recipe', 'is_optional']
-    search_fields = ['name', 'recipe__name']
-    ordering = ['recipe', 'order', 'name']
+    search_fields = ['ingredient__name', 'recipe__name']
+    autocomplete_fields = ['ingredient']
+    ordering = ['recipe', 'order', 'ingredient__name']

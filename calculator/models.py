@@ -34,17 +34,27 @@ class GinRecipe(models.Model):
         super().save(*args, **kwargs)
 
 
+class Ingredient(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(GinRecipe, on_delete=models.CASCADE, related_name='ingredients')
-    name = models.CharField(max_length=100)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT, related_name='recipe_ingredients')
     amount = models.FloatField(help_text="Amount in grams for base volume")
     is_optional = models.BooleanField(default=False)
     notes = models.TextField(blank=True)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
-        ordering = ['order', 'name']
-        unique_together = ['recipe', 'name']
+        ordering = ['order', 'ingredient__name']
+        unique_together = ['recipe', 'ingredient']
 
     def __str__(self):
-        return f"{self.recipe.name} - {self.name} ({self.amount}g)"
+        return f"{self.recipe.name} - {self.ingredient.name} ({self.amount}g)"

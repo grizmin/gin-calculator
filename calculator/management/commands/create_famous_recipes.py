@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from calculator.models import GinRecipe, RecipeIngredient
+from calculator.models import GinRecipe, Ingredient, RecipeIngredient
 import json
 import os
 
@@ -68,9 +68,10 @@ class Command(BaseCommand):
 
             # Create the ingredients
             for ingredient_data in recipe_data['ingredients']:
+                ingredient, _ = Ingredient.objects.get_or_create(name=ingredient_data['name'])
                 RecipeIngredient.objects.create(
                     recipe=recipe,
-                    name=ingredient_data['name'],
+                    ingredient=ingredient,
                     amount=ingredient_data['amount'],
                     is_optional=ingredient_data['is_optional'],
                     notes=ingredient_data['notes'],

@@ -10,7 +10,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gin_calculator.settings')
 django.setup()
 
 from django.contrib.auth.models import User
-from calculator.models import GinRecipe, RecipeIngredient
+from calculator.models import GinRecipe, Ingredient, RecipeIngredient
 
 def create_default_setup():
     """Create default admin user and recipe if they don't exist"""
@@ -56,9 +56,10 @@ def create_default_setup():
         ]
         
         for ingredient_data in ingredients:
+            ingredient, _ = Ingredient.objects.get_or_create(name=ingredient_data['name'])
             RecipeIngredient.objects.create(
                 recipe=recipe,
-                name=ingredient_data['name'],
+                ingredient=ingredient,
                 amount=ingredient_data['amount'],
                 order=ingredient_data['order'],
                 is_optional=False
