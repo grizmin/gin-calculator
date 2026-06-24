@@ -164,6 +164,12 @@
 
   let currentRecipe = null;
 
+ {% if default_recipe %}
+  window.addEventListener('load', () => {
+    loadRecipeDetails({{ default_recipe.id }});
+  });
+  {% endif %}
+
   // Initialize theme based on system preference
   function initTheme() {
     const savedTheme = localStorage.getItem('theme');
@@ -202,15 +208,25 @@
   // Initialize theme on load
   document.addEventListener('DOMContentLoaded', initTheme);
 
-  // Load recipe details
-  function loadRecipeDetails(recipeId) {
-    fetch('/get-recipe/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ recipe_id: parseInt(recipeId) }),
-    })
-    .then(res => res.json())
-    .then(data => {
+  window.addEventListener('load', () => {
+    loadRecipeDetails({{ default_recipe.id }});
+  });
+
+  async function onRecipeChange() {
+    const id = document.getElementById('recipe_select').value;
+    if (!id) return;
+    await loadRecipeDetails(id);
+    calculateIngredients();
+  }
+
+  async function loadRecipeDetails(recipeId) {
+    try {
+      const res  = await fetch('/get-recipe/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recipe_id: parseInt(recipeId) }),
+      });
+      const data = await res.json();
       if (!data.success) { console.error('Recipe load error:', data.error); return; }
 
       currentRecipe = data.recipe;
@@ -221,10 +237,9 @@
       if (targetInput && data.recipe.target_abv_percentage) {
         targetInput.value = data.recipe.target_abv_percentage;
       }
-    })
-    .catch(err => {
+    } catch (err) {
       console.error('Failed to load recipe:', err);
-    });
+    }
   }
 
   function renderRecipeDescription(recipe) {
@@ -270,39 +285,38 @@
     el.innerHTML = metaHtml + '<div class="reference-grid">' + rowsHtml + '</div>';
   }
 
-  function calculateIngredients() {
-    const volume = parseFloat(document.getElementById('volume').value);
-    const recipeId = document.getElementById('recipe_select').value;
+  async function calculateIngredients() {
+    const volume         = parseFloat(document.getElementById('volume').value);
+    const recipeId       = document.getElementById('recipe_select').value;
     const inputSpiritAbv = parseFloat(document.getElementById('input_spirit_abv').value);
-    const targetAbv = parseFloat(document.getElementById('target_abv').value);
+    const targetAbv      = parseFloat(document.getElementById('target_abv').value;
 
     if (!volume || volume <= 0) { showError('Please enter a valid volume.'); return; }
-    if (!recipeId) { showError('Please select a recipe.'); return; }
+    if (!recipeId)               { showError('Please select a recipe.'); return; }
 
-    fetch('/calculate/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ volume, recipe_id: parseInt(recipeId), input_spirit_abv: inputSpiritAbv, target_abv: targetAbv }),
-    })
-    .then(res => res.json())
-    .then(data => {
+    try {
+      const res  = await fetch('/calculate/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ volume, recipe_id: parseInt(recipeId), input_spirit_abv: inputSpiritAbv, target_abv: targetAbv }),
+      });
+      const data = await res.json();
       if (data.success) { renderResults(data); }
       else { showError(data.error || 'Calculation failed.'); }
-    })
-    .catch(err => {
+    } catch (err) {
       showError('Network error: ' + err.message);
-    });
+    }
   }
 
   function renderResults(data) {
     document.getElementById('spirit-value').textContent = data.spirit_needed;
-    document.getElementById('water-value').textContent = data.water_to_add;
+    document.getElementById('water-value').textContent  = data.water_to_add;
     document.getElementById('result-recipe-name').textContent = data.recipe_name;
 
     const list = document.getElementById('ingredient-list');
     list.innerHTML = data.scaled_ingredients.map(ing => {
-      const notes = ing.notes ? `<span class="ingredient-row-notes">${escHtml(ing.notes)}</span>` : '';
-      const badge = ing.is_optional ? `<span class="optional-badge">Optional</span>` : '';
+      const notes  = ing.notes  ? `<span class="ingredient-row-notes">${escHtml(ing.notes)}</span>` : '';
+      const badge  = ing.is_optional ? `<span class="optional-badge">Optional</span>` : '';
       return `<div class="ingredient-row${ing.is_optional ? ' optional' : ''}">
         <div class="ingredient-row-left">
           <span class="ingredient-row-name">${escHtml(ing.name)}</span>
@@ -323,7 +337,7 @@
   }
 
   function showError(msg) {
-    const btn = document.getElementById('calc-btn');
+    const btn  = document.getElementById('calc-btn');
     const prev = btn.textContent;
     btn.textContent = '⚠ ' + msg;
     btn.style.background = '#da3633';
@@ -340,11 +354,6 @@
     if (e.key === 'Enter') calculateIngredients();
   });
   
-  // Initialize theme based on system preference
-  window.addEventListener('load', () => {
-    loadRecipeDetails({{ default_recipe.id }});
-  });
-
   // Theme toggle event listener
   document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
 </script>

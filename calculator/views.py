@@ -121,6 +121,7 @@ def get_recipe(request):
                     'description': recipe.description,
                     'base_volume': recipe.base_volume,
                     'abv_volume': recipe.abv_volume,
+                    'target_abv_percentage': recipe.target_abv_percentage,
                     'ingredients': ingredients
                 }
             })

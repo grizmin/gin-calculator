@@ -3,6 +3,7 @@
 
 /* ── Design Tokens ── */
 :root {
+  /* Dark theme (default) */
   --color-bg:          #0d1117;
   --color-surface:     #161b22;
   --color-surface-2:   #1c2330;
@@ -32,6 +33,33 @@
   --shadow-lg: 0 8px 32px rgba(0,0,0,0.6);
 
   --transition: 0.18s ease;
+}
+
+/* Light theme variables */
+[data-theme="light"] {
+  --color-bg:          #ffffff;
+  --color-surface:     #f6f8fa;
+  --color-surface-2:   #f0f2f5;
+  --color-border:      #d1d5da;
+  --color-border-subtle: #e1e4e8;
+
+  --color-accent:      #0366d6;
+  --color-accent-dim:  rgba(3, 102, 214, 0.12);
+  --color-accent-glow: rgba(3, 102, 214, 0.25);
+
+  --color-juniper:     #2d8a3c;
+  --color-juniper-dim: rgba(45, 138, 60, 0.12);
+
+  --color-amber:       #966102;
+  --color-amber-dim:   rgba(150, 97, 2, 0.12);
+
+  --color-text-primary:   #2a0a0a;
+  --color-text-secondary: #636363;
+  --color-text-muted:     #818181;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
 }
 
 /* ── Reset ── */
@@ -81,11 +109,39 @@ body {
   letter-spacing: -0.01em;
 }
 
-.page-header .tagline {
+.page-header .header-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   margin-left: auto;
+}
+
+.page-header .tagline {
   font-size: 0.8rem;
   color: var(--color-text-muted);
   font-weight: 400;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  transition: background var(--transition);
+}
+
+.theme-toggle:hover {
+  background: var(--color-surface-2);
+}
+
+.theme-toggle .theme-icon {
+  font-size: 1.2rem;
 }
 
 .main-content {
@@ -186,30 +242,29 @@ body {
 /* number input — hide arrows for cleaner look */
 .field input[type="number"]::-webkit-inner-spin-button,
 .field input[type="number"]::-webkit-outer-spin-button {
-  opacity: 0.4;
+  opacity: 0;
 }
 
 /* ── Input sub-row (value + unit badge) ── */
 .input-with-unit {
-  position: relative;
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 .input-with-unit input {
-  flex: 1;
-  padding-right: 48px;
+  padding: 9px 12px;
 }
 
 .unit-badge {
-  position: absolute;
-  right: 10px;
   font-size: 0.72rem;
   font-weight: 600;
   color: var(--color-text-muted);
   pointer-events: none;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* ── Divider ── */
