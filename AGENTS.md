@@ -52,6 +52,16 @@ admin at /admin (admin/admin123).
 - Update/add tests in `calculator/tests.py` and run `python manage.py test`
   before finishing changes.
 
+## Plan Authoring
+When asked to plan (not implement) a change:
+- Read only files directly relevant to the task. Use grep/glob to locate them; do NOT read the whole codebase.
+- Do not interview unless something is genuinely ambiguous; if so, ask ONE question then proceed.
+- The executor is a local Qwen 3 30B model: it writes one file per step and struggles with files over ~150 lines per turn.
+- Each step touches exactly ONE file with ONE concrete, verifiable outcome. Split files >150 lines across ordered steps.
+- Keep plans short: aim for the fewest steps that work (=<10 for simple tasks). No risks/notes section unless critical.
+- Format each step as: File / Change / Verify. No prose between steps.
+- Save approved plans to `.kilo/plans/<kebab-name>.md`.
+
 ## Plan Execution
 When given a plan file to implement:
 - Follow steps in the listed order, one at a time

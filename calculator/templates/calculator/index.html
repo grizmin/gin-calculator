@@ -43,6 +43,9 @@
               {% endfor %}
             </select>
           </div>
+          <div id="recipe-image-wrap" class="recipe-image-wrap" hidden>
+            <img id="recipe-image" alt="" loading="lazy">
+          </div>
           <div id="recipe-description" class="recipe-description" role="note" aria-live="polite"></div>
         </div>
       </div>
@@ -214,8 +217,9 @@
       if (!data.success) { console.error('Recipe load error:', data.error); return; }
 
       currentRecipe = data.recipe;
-      renderRecipeDescription(data.recipe);
-      renderReferenceRecipe(data.recipe);
+       renderRecipeImage(data.recipe);
+       renderRecipeDescription(data.recipe);
+       renderReferenceRecipe(data.recipe);
 
       const targetInput = document.getElementById('target_abv');
       if (targetInput && data.recipe.target_abv_percentage) {
@@ -225,6 +229,31 @@
     .catch(err => {
       console.error('Failed to load recipe:', err);
     });
+  }
+
+  // Handle recipe selection change
+  function onRecipeChange() {
+    const select = document.getElementById('recipe_select');
+    const recipeId = select.value;
+    loadRecipeDetails(recipeId);
+  }
+
+  function renderRecipeImage(recipe) {
+    const wrap = document.getElementById('recipe-image-wrap');
+    const img = document.getElementById('recipe-image');
+    if (!wrap || !img) return;
+
+    const url = (recipe.image_url || '').trim();
+    // Only allow https URLs; hide on missing or broken image.
+    if (!url || !/^https:\/\//i.test(url)) {
+      wrap.hidden = true;
+      img.removeAttribute('src');
+      return;
+    }
+    img.alt = recipe.name || '';
+    img.onerror = function () { wrap.hidden = true; };
+    img.onload = function () { wrap.hidden = false; };
+    img.src = url;
   }
 
   function renderRecipeDescription(recipe) {

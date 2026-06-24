@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class GinRecipe(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
+    image_url = models.URLField(blank=True, default="", help_text="External image URL for this recipe")
     base_volume = models.FloatField(default=1.0, help_text="Base volume in liters")
     abv_volume = models.FloatField(help_text="ABV volume in liters for base volume")
     target_abv_percentage = models.FloatField(
