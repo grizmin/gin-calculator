@@ -23,18 +23,23 @@ Do NOT create a new `venv/` (the README's manual-setup venv steps are outdated).
 Run all from the repo root after `pyenv activate gin`:
 
 - Run dev server: `python manage.py runserver`
-- Run tests: `python manage.py test`
+- Run unit tests: `python manage.py test calculator`
+  (must be scoped to `calculator` — a bare `manage.py test` also tries to
+  import the Playwright suite below and errors)
+- Run UI tests: `python -m pytest tests/` (needs `playwright install chromium`
+  once; spins up its own dev server against the committed `db.sqlite3`)
 - Apply migrations: `python manage.py migrate`
 - Make migrations: `python manage.py makemigrations`
 - Seed default recipe: `python manage.py create_default_recipe`
 
-Docker (alternative): `./build-and-run.sh` → app on http://localhost:8000,
+Docker (alternative): `docker-compose up` → app on http://localhost:8000,
 admin at /admin (admin/admin123).
 
 ## Architecture
 - `calculator/models.py`
   - `GinRecipe`: name, base_volume, abv_volume, is_active, is_default,
-    created_by (User FK). `save()` enforces a single default recipe.
+    target_abv_percentage, image_url, created_by (User FK). `save()`
+    enforces a single default recipe.
   - `RecipeIngredient`: recipe FK (`related_name='ingredients'`), name,
     amount (g per base volume), is_optional, notes, order.
     `unique_together = ['recipe', 'name']`.
@@ -44,6 +49,9 @@ admin at /admin (admin/admin123).
   - Note: both JSON endpoints are `@csrf_exempt`.
 - `calculator/management/commands/create_default_recipe.py` — seeds the
   "Classic London Dry" recipe.
+- `create_custom_default_recipe.py`, `create_famous_recipes.py` — additional
+  recipe-seeding commands (the latter has a known fixture-path bug under
+  investigation).
 - Templates: `calculator/templates/calculator/index.html` (AJAX frontend).
 
 ## Conventions
@@ -63,8 +71,10 @@ When given a plan file to implement:
 ## Code Review
 All pull requests must pass:
 - `python manage.py check` 
-- `python manage.py test`
-- No linting errors
+- `python manage.py test calculator`
+- `python -m pytest tests/`
+- No linting errors (no linter is currently configured — this gate is a
+  no-op until one is added)
 
 ## Commit Style
 Use conventional commits:
