@@ -68,7 +68,10 @@ def calculate(request):
             # FIXED: Corrected formula - input_spirit_abv is percentage (e.g. 96), not decimal (0.96)
             spirit_needed = (desired_volume * target_abv_percentage / 100) / (input_spirit_abv / 100)
             water_to_add = desired_volume - spirit_needed
-            
+
+            still_yield = float(data.get('still_yield', 100.0))
+            spirit_to_load = round(spirit_needed / (still_yield / 100), 2)
+
             return JsonResponse({
                 'success': True,
                 'recipe_name': recipe.name,
@@ -78,6 +81,7 @@ def calculate(request):
                 'scale_factor': round(scale_factor, 2),
                 'spirit_needed': round(spirit_needed, 2),
                 'water_to_add': round(water_to_add, 2),
+                'spirit_to_load': spirit_to_load,
             })
             
         except (ValueError, json.JSONDecodeError) as e:

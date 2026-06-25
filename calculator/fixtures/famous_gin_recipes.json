@@ -1,198 +1,846 @@
 [
-    {
-        "name": "Tanqueray London Dry",
-        "description": "A classic London Dry gin with juniper, coriander, angelica root, and liquorice root.",
-        "base_volume": 1.0,
-        "abv_volume": 0.473,
-        "target_abv_percentage": 47.3,
-        "is_active": true,
-        "is_default": false,
-        "ingredients": [
-            {"name": "Juniper berries", "amount": 17.5, "order": 1, "is_optional": false, "notes": "±15% typical variation"},
-            {"name": "Coriander seeds", "amount": 5.0, "order": 2, "is_optional": false, "notes": "±15% typical variation"},
-            {"name": "Angelica root", "amount": 2.5, "order": 3, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Liquorice root", "amount": 1.5, "order": 4, "is_optional": false, "notes": "±20% typical variation"}
-        ]
-    },
-    {
-        "name": "Hendrick's",
-        "description": "A distinctive gin with cucumber and rose essences added after distillation.",
-        "base_volume": 1.0,
-        "abv_volume": 0.44,
-        "target_abv_percentage": 44.0,
-        "is_active": true,
-        "is_default": false,
-        "ingredients": [
-            {"name": "Juniper berries", "amount": 12.0, "order": 1, "is_optional": false, "notes": "±15% typical variation"},
-            {"name": "Coriander seeds", "amount": 6.5, "order": 2, "is_optional": false, "notes": "±15% typical variation"},
-            {"name": "Angelica root", "amount": 3.0, "order": 3, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Orris root", "amount": 2.5, "order": 4, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Elderflower", "amount": 2.5, "order": 5, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Chamomile", "amount": 1.5, "order": 6, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Cubeb pepper", "amount": 1.5, "order": 7, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Orange peel", "amount": 2.5, "order": 8, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Lemon peel", "amount": 1.5, "order": 9, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Caraway seeds", "amount": 1.5, "order": 10, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Yarrow", "amount": 0.75, "order": 11, "is_optional": false, "notes": "±30% typical variation"},
-            {"name": "Rose essence", "amount": 0.0, "order": 12, "is_optional": true, "notes": "Post-distillation"},
-            {"name": "Cucumber essence", "amount": 0.0, "order": 13, "is_optional": true, "notes": "Post-distillation"}
-        ]
-    },
-    {
-        "name": "Bombay Sapphire",
-        "description": "A gin with a perfect balance of botanicals vapour infused rather than steeped.",
-        "base_volume": 1.0,
-        "abv_volume": 0.47,
-        "target_abv_percentage": 47.0,
-        "is_active": true,
-        "is_default": false,
-        "ingredients": [
-            {"name": "Juniper berries", "amount": 12.5, "order": 1, "is_optional": false, "notes": "±15% typical variation"},
-            {"name": "Coriander seeds", "amount": 6.5, "order": 2, "is_optional": false, "notes": "±15% typical variation"},
-            {"name": "Angelica root", "amount": 3.0, "order": 3, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Orris root", "amount": 2.0, "order": 4, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Lemon peel", "amount": 3.0, "order": 5, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Cassia bark", "amount": 1.5, "order": 6, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Cubeb pepper", "amount": 1.5, "order": 7, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Grains of paradise", "amount": 1.5, "order": 8, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Almonds", "amount": 3.0, "order": 9, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Liquorice root", "amount": 1.5, "order": 10, "is_optional": false, "notes": "±20% typical variation"}
-        ]
-    },
-    {
-        "name": "Beefeater London Dry",
-        "description": "A London Dry gin with a bold juniper-forward profile balanced by warm spice.",
-        "base_volume": 1.0,
-        "abv_volume": 0.40,
-        "target_abv_percentage": 40.0,
-        "is_active": true,
-        "is_default": false,
-        "ingredients": [
-            {"name": "Juniper berries", "amount": 16.0, "order": 1, "is_optional": false, "notes": "±15% typical variation"},
-            {"name": "Coriander seeds", "amount": 7.0, "order": 2, "is_optional": false, "notes": "±15% typical variation"},
-            {"name": "Angelica root", "amount": 4.0, "order": 3, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Angelica seeds", "amount": 1.5, "order": 4, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Orris root", "amount": 2.5, "order": 5, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Seville orange peel", "amount": 4.0, "order": 6, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Lemon peel", "amount": 3.0, "order": 7, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Liquorice root", "amount": 1.5, "order": 8, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Almond", "amount": 1.5, "order": 9, "is_optional": false, "notes": "±20% typical variation"}
-        ]
-    },
-    {
-        "name": "Aviation American Gin",
-        "description": "An aromatic American gin with lavender and floral notes.",
-        "base_volume": 1.0,
-        "abv_volume": 0.42,
-        "target_abv_percentage": 42.0,
-        "is_active": true,
-        "is_default": false,
-        "ingredients": [
-            {"name": "Juniper berries", "amount": 8.0, "order": 1, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Coriander seeds", "amount": 5.0, "order": 2, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Cardamom", "amount": 3.0, "order": 3, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Sweet orange peel", "amount": 2.5, "order": 4, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Bitter orange peel", "amount": 1.5, "order": 5, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Lavender", "amount": 2.5, "order": 6, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Indian sarsaparilla", "amount": 2.5, "order": 7, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Anise seed", "amount": 1.5, "order": 8, "is_optional": false, "notes": "±20% typical variation"}
-        ]
-    },
-    {
-        "name": "Gordon's London Dry",
-        "description": "The world's best-selling gin with a perfect balance of juniper and citrus.",
-        "base_volume": 1.0,
-        "abv_volume": 0.375,
-        "target_abv_percentage": 37.5,
-        "is_active": true,
-        "is_default": false,
-        "ingredients": [
-            {"name": "Juniper berries", "amount": 16.0, "order": 1, "is_optional": false, "notes": "±15% typical variation"},
-            {"name": "Coriander seeds", "amount": 6.5, "order": 2, "is_optional": false, "notes": "±15% typical variation"},
-            {"name": "Angelica root", "amount": 3.0, "order": 3, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Liquorice root", "amount": 1.5, "order": 4, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Orris root", "amount": 1.5, "order": 5, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Orange peel", "amount": 2.5, "order": 6, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Lemon peel", "amount": 1.5, "order": 7, "is_optional": false, "notes": "±20% typical variation"}
-        ]
-    },
-    {
-        "name": "Monkey 47 Schwarzwald Dry Gin",
-        "description": "A complex gin with 47 botanicals sourced from the Black Forest region.",
-        "base_volume": 1.0,
-        "abv_volume": 0.47,
-        "target_abv_percentage": 47.0,
-        "is_active": true,
-        "is_default": false,
-        "ingredients": [
-            {"name": "Juniper berries", "amount": 10.0, "order": 1, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Lingonberries", "amount": 12.5, "order": 2, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Coriander seeds", "amount": 4.0, "order": 3, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Angelica root", "amount": 2.5, "order": 4, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Orris root", "amount": 1.5, "order": 5, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Cassia bark", "amount": 1.5, "order": 6, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Cardamom", "amount": 1.5, "order": 7, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Lemon peel", "amount": 1.5, "order": 8, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Pomelo peel", "amount": 1.5, "order": 9, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Black pepper", "amount": 1.5, "order": 10, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Cubeb pepper", "amount": 0.75, "order": 11, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Grains of paradise", "amount": 0.75, "order": 12, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Lavender", "amount": 1.5, "order": 13, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Chamomile", "amount": 1.5, "order": 14, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Elderflower", "amount": 1.5, "order": 15, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Rose mallow", "amount": 0.75, "order": 16, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Dog rose hips", "amount": 0.75, "order": 17, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Honeysuckle", "amount": 0.75, "order": 18, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Jasmine", "amount": 0.75, "order": 19, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Spruce shoots", "amount": 1.5, "order": 20, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Sloe berries", "amount": 1.5, "order": 21, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Hawthorn berries", "amount": 0.75, "order": 22, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Blackberry leaves", "amount": 0.75, "order": 23, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Cranberry", "amount": 1.5, "order": 24, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Lemon balm", "amount": 0.75, "order": 25, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Lemon verbena", "amount": 0.75, "order": 26, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Lemongrass", "amount": 0.75, "order": 27, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Makrut lime leaves", "amount": 0.75, "order": 28, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Sage", "amount": 0.75, "order": 29, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Sweet flag", "amount": 0.75, "order": 30, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Bee balm", "amount": 0.75, "order": 31, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Yarrow", "amount": 0.75, "order": 32, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Marshmallow root", "amount": 0.75, "order": 33, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Ginger", "amount": 1.5, "order": 34, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Nutmeg", "amount": 0.75, "order": 35, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Cloves", "amount": 0.4, "order": 36, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Cinnamon", "amount": 0.75, "order": 37, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Ambrette seed", "amount": 0.4, "order": 38, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Acacia flowers", "amount": 0.4, "order": 39, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Liquorice root", "amount": 1.5, "order": 40, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Almonds", "amount": 0.75, "order": 41, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Pimento", "amount": 0.75, "order": 42, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Rose hip", "amount": 0.75, "order": 43, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Orange peel", "amount": 0.75, "order": 44, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Vanilla", "amount": 0.4, "order": 45, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Camomile", "amount": 0.75, "order": 46, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"},
-            {"name": "Almond", "amount": 0.75, "order": 47, "is_optional": false, "notes": "±25% typical variation (Monkey 47 botanical bill)"}
-        ]
-    },
-    {
-        "name": "Sipsmith London Dry",
-        "description": "A craft gin made in small batches using a traditional copper still.",
-        "base_volume": 1.0,
-        "abv_volume": 0.416,
-        "target_abv_percentage": 41.6,
-        "is_active": true,
-        "is_default": false,
-        "ingredients": [
-            {"name": "Juniper berries", "amount": 15.0, "order": 1, "is_optional": false, "notes": "±15% typical variation"},
-            {"name": "Coriander seeds", "amount": 7.0, "order": 2, "is_optional": false, "notes": "±15% typical variation"},
-            {"name": "Angelica root", "amount": 3.5, "order": 3, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Orris root", "amount": 2.5, "order": 4, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Lemon peel", "amount": 3.0, "order": 5, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Bitter orange peel", "amount": 2.5, "order": 6, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Cassia bark", "amount": 1.5, "order": 7, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Cinnamon", "amount": 0.75, "order": 8, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Liquorice root", "amount": 1.5, "order": 9, "is_optional": false, "notes": "±20% typical variation"},
-            {"name": "Almond", "amount": 1.5, "order": 10, "is_optional": false, "notes": "±20% typical variation"}
-        ]
-    }
+  {
+    "name": "Tanqueray London Dry",
+    "description": "Tanqueray is distilled in traditional copper pot stills using a simple single-shot method. Only 4 botanicals are used — the fewest among major London Dry gins — making it deliberately juniper-forward. The spirit is 96% ABV neutral grain spirit, with botanicals macerated then distilled in one continuous process. No additives or sugar are permitted after distillation.",
+    "base_volume": 1.0,
+    "abv_volume": 0.473,
+    "target_abv_percentage": 47.3,
+    "is_active": true,
+    "is_default": false,
+    "ingredients": [
+      {
+        "name": "Juniper berries",
+        "amount": 17.5,
+        "order": 1,
+        "is_optional": false,
+        "notes": "±15% typical variation"
+      },
+      {
+        "name": "Coriander seeds",
+        "amount": 5.0,
+        "order": 2,
+        "is_optional": false,
+        "notes": "±15% typical variation"
+      },
+      {
+        "name": "Angelica root",
+        "amount": 2.5,
+        "order": 3,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Liquorice root",
+        "amount": 1.5,
+        "order": 4,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      }
+    ]
+  },
+  {
+    "name": "Hendrick's",
+    "description": "Hendrick's is distilled in two separate stills: first a Carter-Head still for the base botanicals, then a Bennett pot still for the floral botanicals. After distillation, cucumber and rose essences are added post-distillation (not vapour-infused), giving its signature profile. The gin is bottled at 44% ABV. The two-still process separates the heavier botanicals from the delicate florals.",
+    "base_volume": 1.0,
+    "abv_volume": 0.44,
+    "target_abv_percentage": 44.0,
+    "is_active": true,
+    "is_default": false,
+    "ingredients": [
+      {
+        "name": "Juniper berries",
+        "amount": 12.0,
+        "order": 1,
+        "is_optional": false,
+        "notes": "±15% typical variation"
+      },
+      {
+        "name": "Coriander seeds",
+        "amount": 6.5,
+        "order": 2,
+        "is_optional": false,
+        "notes": "±15% typical variation"
+      },
+      {
+        "name": "Angelica root",
+        "amount": 3.0,
+        "order": 3,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Orris root",
+        "amount": 2.5,
+        "order": 4,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Elderflower",
+        "amount": 2.5,
+        "order": 5,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Chamomile",
+        "amount": 1.5,
+        "order": 6,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Cubeb pepper",
+        "amount": 1.5,
+        "order": 7,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Orange peel",
+        "amount": 2.5,
+        "order": 8,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Lemon peel",
+        "amount": 1.5,
+        "order": 9,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Caraway seeds",
+        "amount": 1.5,
+        "order": 10,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Yarrow",
+        "amount": 0.75,
+        "order": 11,
+        "is_optional": false,
+        "notes": "±30% typical variation"
+      },
+      {
+        "name": "Rose essence",
+        "amount": 0.0,
+        "order": 12,
+        "is_optional": true,
+        "notes": "added post-distillation, amount varies by batch"
+      },
+      {
+        "name": "Cucumber essence",
+        "amount": 0.0,
+        "order": 13,
+        "is_optional": true,
+        "notes": "added post-distillation, amount varies by batch"
+      }
+    ]
+  },
+  {
+    "name": "Bombay Sapphire",
+    "description": "Bombay Sapphire uses the Carter-Head vapour infusion process exclusively — botanicals are placed in a basket above the spirit (never touching the liquid), and vapour passes through them. This produces a lighter, more delicate gin compared to maceration methods. The base is 96.3% ABV wheat neutral spirit. All 10 botanicals are printed on the bottle. No sugar or additives after distillation.",
+    "base_volume": 1.0,
+    "abv_volume": 0.47,
+    "target_abv_percentage": 47.0,
+    "is_active": true,
+    "is_default": false,
+    "ingredients": [
+      {
+        "name": "Juniper berries",
+        "amount": 12.5,
+        "order": 1,
+        "is_optional": false,
+        "notes": "±15% typical variation"
+      },
+      {
+        "name": "Coriander seeds",
+        "amount": 6.5,
+        "order": 2,
+        "is_optional": false,
+        "notes": "±15% typical variation"
+      },
+      {
+        "name": "Angelica root",
+        "amount": 3.0,
+        "order": 3,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Orris root",
+        "amount": 2.0,
+        "order": 4,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Lemon peel",
+        "amount": 3.0,
+        "order": 5,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Cassia bark",
+        "amount": 1.5,
+        "order": 6,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Cubeb pepper",
+        "amount": 1.5,
+        "order": 7,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Grains of paradise",
+        "amount": 1.5,
+        "order": 8,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Almonds",
+        "amount": 3.0,
+        "order": 9,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Liquorice root",
+        "amount": 1.5,
+        "order": 10,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      }
+    ]
+  },
+  {
+    "name": "Beefeater London Dry",
+    "description": "Beefeater follows the original 1895 recipe with a 24-hour maceration process — all 9 botanicals are steeped in 96% ABV grain spirit for a full day before distillation in a traditional copper pot still. This extended maceration extracts maximum flavour from the botanicals, particularly the Seville orange peel. The recipe has remained unchanged since its creation.",
+    "base_volume": 1.0,
+    "abv_volume": 0.40,
+    "target_abv_percentage": 40.0,
+    "is_active": true,
+    "is_default": false,
+    "ingredients": [
+      {
+        "name": "Juniper berries",
+        "amount": 16.0,
+        "order": 1,
+        "is_optional": false,
+        "notes": "±15% typical variation"
+      },
+      {
+        "name": "Coriander seeds",
+        "amount": 7.0,
+        "order": 2,
+        "is_optional": false,
+        "notes": "±15% typical variation"
+      },
+      {
+        "name": "Angelica root",
+        "amount": 4.0,
+        "order": 3,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Angelica seeds",
+        "amount": 1.5,
+        "order": 4,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Orris root",
+        "amount": 2.5,
+        "order": 5,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Seville orange peel",
+        "amount": 4.0,
+        "order": 6,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Lemon peel",
+        "amount": 3.0,
+        "order": 7,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Liquorice root",
+        "amount": 1.5,
+        "order": 8,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Almonds",
+        "amount": 1.5,
+        "order": 9,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      }
+    ]
+  },
+  {
+    "name": "Aviation American Gin",
+    "description": "Aviation is a 'New Western' gin that deliberately de-emphasizes juniper in favour of floral and herbal botanicals. Produced at House Spirits Distillery in Portland, Oregon. Botanicals are steeped for 18 hours then re-distilled in a 400-gallon copper pot still. The lavender and Indian sarsaparilla give it a distinctive floral, earthy profile. Named after the Aviation cocktail.",
+    "base_volume": 1.0,
+    "abv_volume": 0.42,
+    "target_abv_percentage": 42.0,
+    "is_active": true,
+    "is_default": false,
+    "ingredients": [
+      {
+        "name": "Juniper berries",
+        "amount": 8.0,
+        "order": 1,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Coriander seeds",
+        "amount": 5.0,
+        "order": 2,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Cardamom",
+        "amount": 3.0,
+        "order": 3,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Sweet orange peel",
+        "amount": 2.5,
+        "order": 4,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Bitter orange peel",
+        "amount": 1.5,
+        "order": 5,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Lavender",
+        "amount": 2.5,
+        "order": 6,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Indian sarsaparilla",
+        "amount": 2.5,
+        "order": 7,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Anise seed",
+        "amount": 1.5,
+        "order": 8,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      }
+    ]
+  },
+  {
+    "name": "Gordon's London Dry",
+    "description": "Gordon's is one of the oldest gin brands (established 1769), with a recipe that has remained largely unchanged. It uses a traditional London Dry process with maceration followed by distillation in copper pot stills. Notably produces a 'dry' gin with no added sugar. The 7-botanical bill is a classic, minimal profile. Bottled at 37.5% ABV in the UK (40% in the US).",
+    "base_volume": 1.0,
+    "abv_volume": 0.375,
+    "target_abv_percentage": 37.5,
+    "is_active": true,
+    "is_default": false,
+    "ingredients": [
+      {
+        "name": "Juniper berries",
+        "amount": 16.0,
+        "order": 1,
+        "is_optional": false,
+        "notes": "±15% typical variation"
+      },
+      {
+        "name": "Coriander seeds",
+        "amount": 6.5,
+        "order": 2,
+        "is_optional": false,
+        "notes": "±15% typical variation"
+      },
+      {
+        "name": "Angelica root",
+        "amount": 3.0,
+        "order": 3,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Liquorice root",
+        "amount": 1.5,
+        "order": 4,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Orris root",
+        "amount": 1.5,
+        "order": 5,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Orange peel",
+        "amount": 2.5,
+        "order": 6,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Lemon peel",
+        "amount": 1.5,
+        "order": 7,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      }
+    ]
+  },
+  {
+    "name": "Monkey 47 Schwarzwald Dry Gin",
+    "description": "Monkey 47 is produced in the Black Forest (Schwarzwald), Germany, using a molasses-based neutral spirit rather than grain. The gin features 47 botanicals — the most of any major gin brand. Lingonberries are macerated for approximately one week as the 'base note', while the remaining 46 botanicals are added 36 hours before distillation. Distilled in a 1920s-era copper still. Bottled at 47% ABV. The botanicals include herbs, flowers, spices, and forest berries sourced from the Black Forest region.",
+    "base_volume": 1.0,
+    "abv_volume": 0.47,
+    "target_abv_percentage": 47.0,
+    "is_active": true,
+    "is_default": false,
+    "ingredients": [
+      {
+        "name": "Juniper berries",
+        "amount": 10.0,
+        "order": 1,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Lingonberries",
+        "amount": 12.5,
+        "order": 2,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Coriander seeds",
+        "amount": 4.0,
+        "order": 3,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Angelica root",
+        "amount": 2.5,
+        "order": 4,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Orris root",
+        "amount": 1.5,
+        "order": 5,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Cassia bark",
+        "amount": 1.5,
+        "order": 6,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Cardamom",
+        "amount": 1.5,
+        "order": 7,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Lemon peel",
+        "amount": 1.5,
+        "order": 8,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Pomelo peel",
+        "amount": 1.5,
+        "order": 9,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Black pepper",
+        "amount": 1.5,
+        "order": 10,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Cubeb pepper",
+        "amount": 0.75,
+        "order": 11,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Grains of paradise",
+        "amount": 0.75,
+        "order": 12,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Lavender",
+        "amount": 1.5,
+        "order": 13,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Chamomile",
+        "amount": 1.5,
+        "order": 14,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Elderflower",
+        "amount": 1.5,
+        "order": 15,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Rose mallow",
+        "amount": 0.75,
+        "order": 16,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Dog rose hips",
+        "amount": 0.75,
+        "order": 17,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Honeysuckle",
+        "amount": 0.75,
+        "order": 18,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Jasmine",
+        "amount": 0.75,
+        "order": 19,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Spruce shoots",
+        "amount": 1.5,
+        "order": 20,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Sloe berries",
+        "amount": 1.5,
+        "order": 21,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Hawthorn berries",
+        "amount": 0.75,
+        "order": 22,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Blackberry leaves",
+        "amount": 0.75,
+        "order": 23,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Cranberry",
+        "amount": 1.5,
+        "order": 24,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Lemon balm",
+        "amount": 0.75,
+        "order": 25,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Lemon verbena",
+        "amount": 0.75,
+        "order": 26,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Lemongrass",
+        "amount": 0.75,
+        "order": 27,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Makrut lime leaves",
+        "amount": 0.75,
+        "order": 28,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Sage",
+        "amount": 0.75,
+        "order": 29,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Sweet flag (calamus)",
+        "amount": 0.75,
+        "order": 30,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Bee balm",
+        "amount": 0.75,
+        "order": 31,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Yarrow",
+        "amount": 0.75,
+        "order": 32,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Marshmallow root",
+        "amount": 0.75,
+        "order": 33,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Ginger",
+        "amount": 1.5,
+        "order": 34,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Nutmeg",
+        "amount": 0.75,
+        "order": 35,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Cloves",
+        "amount": 0.4,
+        "order": 36,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Cinnamon",
+        "amount": 0.75,
+        "order": 37,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Ambrette seed",
+        "amount": 0.4,
+        "order": 38,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Acacia flowers",
+        "amount": 0.4,
+        "order": 39,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Liquorice root",
+        "amount": 1.5,
+        "order": 40,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Almonds",
+        "amount": 0.75,
+        "order": 41,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Pimento",
+        "amount": 0.75,
+        "order": 42,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Rose hip",
+        "amount": 0.75,
+        "order": 43,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Orange peel",
+        "amount": 0.75,
+        "order": 44,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Vanilla",
+        "amount": 0.4,
+        "order": 45,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Camomile",
+        "amount": 0.75,
+        "order": 46,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      },
+      {
+        "name": "Almond",
+        "amount": 0.75,
+        "order": 47,
+        "is_optional": false,
+        "notes": "±25% typical variation (Monkey 47 botanical bill)"
+      }
+    ]
+  },
+  {
+    "name": "Sipsmith London Dry",
+    "description": "Sipsmith was the first London distillery to operate legally in 150 years (opened 2009). Uses a single-shot distillation method in their copper pot still named 'Prudence'. The base is 100% wheat neutral spirit. All 10 botanicals are added in a single batch and distilled together. The gin is bottled at 41.6% ABV — an unusual strength chosen to balance flavour extraction. No additives or sugar after distillation.",
+    "base_volume": 1.0,
+    "abv_volume": 0.416,
+    "target_abv_percentage": 41.6,
+    "is_active": true,
+    "is_default": false,
+    "ingredients": [
+      {
+        "name": "Juniper berries",
+        "amount": 15.0,
+        "order": 1,
+        "is_optional": false,
+        "notes": "±15% typical variation"
+      },
+      {
+        "name": "Coriander seeds",
+        "amount": 7.0,
+        "order": 2,
+        "is_optional": false,
+        "notes": "±15% typical variation"
+      },
+      {
+        "name": "Angelica root",
+        "amount": 3.5,
+        "order": 3,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Orris root",
+        "amount": 2.5,
+        "order": 4,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Lemon peel",
+        "amount": 3.0,
+        "order": 5,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Orange peel (bitter)",
+        "amount": 2.5,
+        "order": 6,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Cassia bark",
+        "amount": 1.5,
+        "order": 7,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Cinnamon",
+        "amount": 0.75,
+        "order": 8,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Liquorice root",
+        "amount": 1.5,
+        "order": 9,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      },
+      {
+        "name": "Almonds",
+        "amount": 1.5,
+        "order": 10,
+        "is_optional": false,
+        "notes": "±20% typical variation"
+      }
+    ]
+  }
 ]

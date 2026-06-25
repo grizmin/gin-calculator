@@ -130,23 +130,24 @@ gin-calculator/
 │           └── index.html
 └── tests/                     # Playwright UI tests (run with pytest)
     ├── conftest.py
-    └── test_ui.py
+    ├── test_ui.py
+    └── test_calculator_views.py  # New comprehensive test file
 ```
 
 ## API Endpoints
 
 - **POST /calculate/** - Calculate scaled ingredients
-  - Request body: `{"volume": 2.0, "recipe_id": 1}`
-  - Response: Scaled ingredient amounts and ABV volume
+  - Request body: `{"volume": 2.0, "recipe_id": 1, "input_spirit_abv": 96.0, "target_abv": 40.0}`
+  - Response: Scaled ingredient amounts, ABV volume, spirit/water calculations
 
 - **POST /get-recipe/** - Get recipe details
   - Request body: `{"recipe_id": 1}`
-  - Response: Recipe information with ingredients
+  - Response: Recipe information with ingredients, description, and image_url
 
 ## Recipe Management
 
 ### Admin Features:
-- Create multiple gin recipes with custom names and descriptions
+- Create multiple gin recipes with custom names, descriptions, and image URLs
 - Add ingredients with amounts, optional status, and notes
 - Set base volume and ABV volume for each recipe
 - Mark recipes as active/inactive
@@ -155,7 +156,8 @@ gin-calculator/
 
 ### Database Models:
 - **GinRecipe**: Stores recipe metadata (name, description, volumes, status)
-- **RecipeIngredient**: Stores individual ingredients with amounts and properties
+- **Ingredient**: Stores ingredient names (unique)
+- **RecipeIngredient**: Stores individual ingredients with amounts and properties, links to Ingredient model
 
 ## Management Commands
 

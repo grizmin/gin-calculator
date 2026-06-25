@@ -37,12 +37,12 @@ admin at /admin (admin/admin123).
 
 ## Architecture
 - `calculator/models.py`
-  - `GinRecipe`: name, base_volume, abv_volume, is_active, is_default,
-    target_abv_percentage, image_url, created_by (User FK). `save()`
-    enforces a single default recipe.
-  - `RecipeIngredient`: recipe FK (`related_name='ingredients'`), name,
-    amount (g per base volume), is_optional, notes, order.
-    `unique_together = ['recipe', 'name']`.
+- `GinRecipe`: name, description, image_url, base_volume, abv_volume, is_active, is_default,
+  target_abv_percentage, created_by (User FK). `save()`
+  enforces a single default recipe.
+- `RecipeIngredient`: recipe FK (`related_name='ingredients'`), ingredient FK,
+  amount (g per base volume), is_optional, notes, order.
+  `unique_together = ['recipe', 'ingredient']`.
 - `calculator/views.py` — server-rendered `index` plus two JSON POST endpoints:
   - `calculate`: scales ingredients by `desired_volume / base_volume`.
   - `get_recipe`: returns recipe details.
