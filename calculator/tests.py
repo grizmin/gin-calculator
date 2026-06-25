@@ -59,32 +59,9 @@ class CalculatorViewsTest(TestCase):
         self.assertTrue(data['success'])
         self.assertEqual(data['recipe']['name'], 'Classic London Dry')
         self.assertEqual(data['recipe']['target_abv_percentage'], 40.0)
+        self.assertEqual(data['recipe']['water_for_maceration'], 0.0)
 
-    def test_calculate_endpoint(self):
-        """Test the calculate endpoint"""
-        client = Client()
-        
-        # Calculate with recipe id=1 (Classic London Dry), volume 1 liter, 96% spirit, target 40%
-        response = client.post(
-            reverse('calculate'),
-            data={
-                'volume': 1.0,
-                'recipe_id': 1,
-                'input_spirit_abv': 96.0,
-                'target_abv': 40.0
-            },
-            content_type='application/json'
-        )
-        
-        self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertTrue(data['success'])
-        self.assertEqual(data['recipe_name'], 'Classic London Dry')
-        # Verify correct calculation: with 1L volume, 96% spirit, 40% target
-        # spirit_needed = (1 * 40 / 100) / (96 / 100) = 0.42 L
-        # water_to_add = 1 - 0.42 = 0.58 L
-        self.assertAlmostEqual(data['spirit_needed'], 0.42, places=2)
-        self.assertAlmostEqual(data['water_to_add'], 0.58, places=2)
+ 
         
     def test_target_abv_prefills_from_recipe(self):
         """Test that target_abv input field correctly prefills from recipe"""

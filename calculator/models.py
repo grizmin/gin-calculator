@@ -14,6 +14,10 @@ class GinRecipe(models.Model):
         validators=[MinValueValidator(10.0), MaxValueValidator(99.0)],
         help_text="Target ABV % of the finished gin (10–99%)"
     )
+    water_for_maceration = models.FloatField(
+        default=0.0,
+        help_text="Water needed for maceration in liters"
+    )
     is_active = models.BooleanField(default=True)
     is_default = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)

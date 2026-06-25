@@ -94,6 +94,14 @@
           </div>
 
           <div class="params-group">
+            <label class="params-label" for="maceration_abv">Maceration ABV</label>
+            <div class="params-input-wrap">
+              <input class="params-input" type="number" id="maceration_abv" value="50" min="5" max="95" step="0.1" title="ABV to dilute the maceration charge down to partway through (e.g. after the neat phase)">
+              <span class="params-unit">%</span>
+            </div>
+          </div>
+
+          <div class="params-group">
             <label class="params-label" for="target_abv">Target gin ABV</label>
             <div class="params-input-wrap">
               <input class="params-input" type="number" id="target_abv" value="40" min="10" max="99" step="0.1" title="Desired final alcohol percentage of the finished gin after mixing all ingredients">
@@ -127,15 +135,15 @@
           <div class="card-body">
             <div class="volumes-grid">
               <div class="volume-stat spirit">
-                <div class="volume-stat-label">Spirit to load from still</div>
+                <div class="volume-stat-label">Maceration alc</div>
                 <div class="volume-stat-value">
                   <span id="spirit-load-value">—</span><span class="volume-stat-unit">L</span>
                 </div>
               </div>
               <div class="volume-stat water">
-                <div class="volume-stat-label">Pure spirit needed</div>
+                <div class="volume-stat-label">Maceration water needed</div>
                 <div class="volume-stat-value">
-                  <span id="spirit-value">—</span><span class="volume-stat-unit">L</span>
+                  <span id="maceration-water-value">—</span><span class="volume-stat-unit">L</span>
                 </div>
               </div>
               <div class="volume-stat water">
@@ -289,58 +297,73 @@
     }
   }
 
-  function calculateLocally() {
-    const volume = parseFloat(document.getElementById('volume').value);
-    const inputSpiritAbv = parseFloat(document.getElementById('input_spirit_abv').value);
-    const targetAbv = parseFloat(document.getElementById('target_abv').value);
-    const stillYield = parseFloat(document.getElementById('still_yield').value) || 85;
+   function calculateLocally() {
+     const volume = parseFloat(document.getElementById('volume').value);
+     const inputSpiritAbv = parseFloat(document.getElementById('input_spirit_abv').value);
+     const targetAbv = parseFloat(document.getElementById('target_abv').value);
+     const stillYield = parseFloat(document.getElementById('still_yield').value) || 85;
+     const macerationAbv = parseFloat(document.getElementById('maceration_abv').value);
 
-    if (!currentRecipe) return;
-    if (!volume || volume <= 0) return;
-    if (!inputSpiritAbv || inputSpiritAbv <= 0) return;
-    if (!targetAbv || targetAbv <= 0) return;
+     if (!currentRecipe) return;
+     if (!volume || volume <= 0) return;
+     if (!inputSpiritAbv || inputSpiritAbv <= 0) return;
+     if (!targetAbv || targetAbv <= 0) return;
 
-    const scaleFactor = volume / currentRecipe.base_volume;
+     if (!macerationAbv || macerationAbv <= 0 || macerationAbv >= inputSpiritAbv) {
+       document.getElementById('results-placeholder').style.display = '';
+       document.getElementById('results').classList.remove('show');
+       document.getElementById('results-placeholder').innerHTML =
+         '<span class="results-placeholder-icon" aria-hidden="true">⚠️</span>' +
+         '<p>Maceration ABV must be lower than the input spirit ABV.</p>';
+       return;
+     }
 
-    const scaledIngredients = currentRecipe.ingredients.map(ing => ({
-      name: ing.name,
-      amount: Math.round(ing.amount * scaleFactor * 100) / 100,
-      base_amount: ing.amount,
-      is_optional: ing.is_optional,
-      notes: ing.notes
-    }));
+     const scaleFactor = volume / currentRecipe.base_volume;
 
-    const spiritNeeded = Math.round(
-      ((volume * targetAbv / 100) / (inputSpiritAbv / 100)) * 100
-    ) / 100;
-    const waterToAdd = Math.round((volume - spiritNeeded) * 100) / 100;
+     const scaledIngredients = currentRecipe.ingredients.map(ing => ({
+       name: ing.name,
+       amount: Math.round(ing.amount * scaleFactor * 100) / 100,
+       base_amount: ing.amount,
+       is_optional: ing.is_optional,
+       notes: ing.notes
+     }));
 
-    if (waterToAdd < 0) {
-      document.getElementById('results-placeholder').style.display = '';
-      document.getElementById('results').classList.remove('show');
-      document.getElementById('results-placeholder').innerHTML =
-        '<span class="results-placeholder-icon" aria-hidden="true">⚠️</span>' +
-        '<p>Input spirit ABV must be higher than the target gin ABV.</p>';
-      return;
-    }
+     const spiritNeeded = Math.round(
+       ((volume * targetAbv / 100) / (inputSpiritAbv / 100)) * 100
+     ) / 100;
+     const waterToAdd = Math.round((volume - spiritNeeded) * 100) / 100;
 
-    const spiritToLoad = Math.round((spiritNeeded / (stillYield / 100)) * 100) / 100;
+     if (waterToAdd < 0) {
+       document.getElementById('results-placeholder').style.display = '';
+       document.getElementById('results').classList.remove('show');
+       document.getElementById('results-placeholder').innerHTML =
+         '<span class="results-placeholder-icon" aria-hidden="true">⚠️</span>' +
+         '<p>Input spirit ABV must be higher than the target gin ABV.</p>';
+       return;
+     }
 
-    renderResults({
-      success: true,
-      recipe_name: currentRecipe.name,
-      spirit_needed: spiritNeeded,
-      water_to_add: waterToAdd,
-      spirit_to_load: spiritToLoad,
-      scaled_ingredients: scaledIngredients
-    });
-  }
+     const spiritToLoad = Math.round((spiritNeeded / (stillYield / 100)) * 100) / 100;
 
-  function renderResults(data) {
-    document.getElementById('spirit-value').textContent = data.spirit_needed;
-    document.getElementById('spirit-load-value').textContent = data.spirit_to_load || data.spirit_needed;
-    document.getElementById('water-value').textContent = data.water_to_add;
-    document.getElementById('result-recipe-name').textContent = data.recipe_name;
+     const waterForMaceration = Math.round(
+       (spiritToLoad * (inputSpiritAbv / macerationAbv - 1)) * 100
+     ) / 100;
+
+     renderResults({
+       success: true,
+       recipe_name: currentRecipe.name,
+       spirit_needed: spiritNeeded,
+       water_to_add: waterToAdd,
+       spirit_to_load: spiritToLoad,
+       maceration_water: waterForMaceration,
+       scaled_ingredients: scaledIngredients
+     });
+   }
+
+   function renderResults(data) {
+     document.getElementById('spirit-load-value').textContent = data.spirit_to_load || data.spirit_needed;
+     document.getElementById('maceration-water-value').textContent = data.maceration_water;
+     document.getElementById('water-value').textContent = data.water_to_add;
+     document.getElementById('result-recipe-name').textContent = data.recipe_name;
 
     const list = document.getElementById('ingredient-list');
     list.innerHTML = data.scaled_ingredients.map((ing, idx) => {
@@ -424,7 +447,7 @@
 
   const debouncedCalculate = debounce(calculateLocally, 120);
 
-  ['volume', 'input_spirit_abv', 'target_abv', 'still_yield'].forEach(id => {
+  ['volume', 'input_spirit_abv', 'target_abv', 'still_yield', 'maceration_abv'].forEach(id => {
     document.getElementById(id).addEventListener('input', debouncedCalculate);
   });
 

@@ -51,8 +51,7 @@ test_http "http://localhost:8000" "200"
 # Test admin page
 test_http "http://localhost:8000/admin/" "302"
 
-# Test API endpoint (should redirect or return error without proper data)
-test_http "http://localhost:8000/calculate/" "405"
+
 
 echo ""
 echo "🎉 Basic tests completed!"
