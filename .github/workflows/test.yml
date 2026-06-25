@@ -61,5 +61,8 @@ jobs:
       - name: Apply migrations
         run: python manage.py migrate --noinput
 
+      - name: Seed default recipe
+        run: python manage.py create_default_recipe
+
       - name: Run UI tests
         run: pytest tests/test_ui.py --verbosity 2

@@ -10,13 +10,15 @@ BASE_URL = "http://127.0.0.1:8000"
 def django_server():
     proc = subprocess.Popen(
         ["python", "manage.py", "runserver", "--noreload"],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
     )
     time.sleep(3)
     yield
     proc.terminate()
-    proc.wait()
+    stdout, stderr = proc.communicate(timeout=5)
+    if stderr:
+        print(f"[django-server stderr]\n{stderr.decode()}")
 
 
 @pytest.fixture(scope="function")

@@ -49,8 +49,8 @@ def test_calculate_formula(page):
     # Page now calculates on input change, wait for results to appear
     page.wait_for_selector("#results.show", timeout=5000)
 
-    spirit = page.inner_text("#spirit-needed")
-    water  = page.inner_text("#water-to-add")
+    spirit = page.inner_text("#spirit-value")
+    water  = page.inner_text("#water-value")
 
     assert "0.694" in spirit, f"Wrong spirit value: {spirit!r}"
     assert "0.875" in water,  f"Wrong water value: {water!r}"
