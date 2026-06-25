@@ -22,9 +22,11 @@ def test_recipe_dropdown_populated(page):
     """Recipe dropdown contains at least one option with a real value."""
     page.goto(BASE_URL)
     options = page.locator("#recipe_select option")
-    expect(options.first).to_be_visible()
     count = options.count()
     assert count >= 1
+    # Verify at least one option has text content
+    first_text = options.first.inner_text()
+    assert len(first_text.strip()) > 0
 
 
 def test_target_abv_prefills_from_recipe(page):
@@ -43,9 +45,9 @@ def test_calculate_formula(page):
     page.fill("#volume", "1.5")
     page.fill("#input_spirit_abv", "96")
     page.fill("#target_abv", "40")
-    page.click(".calculate-btn")
 
-    page.wait_for_selector("#results.show")
+    # Page now calculates on input change, wait for results to appear
+    page.wait_for_selector("#results.show", timeout=5000)
 
     spirit = page.inner_text("#spirit-needed")
     water  = page.inner_text("#water-to-add")
