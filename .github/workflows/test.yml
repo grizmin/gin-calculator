@@ -32,11 +32,9 @@ jobs:
       - name: Run Django system check
         run: python manage.py check
 
-      # Scoped to the `calculator` app: the top-level `tests/` package holds
-      # Playwright tests (run separately in ui-tests), which Django's test
-      # runner cannot import.
+      # Run all Django unit tests: calculator app + tests/test_calculator_views.py
       - name: Run unit tests
-        run: python manage.py test calculator --verbosity 2
+        run: python manage.py test calculator tests.test_calculator_views --verbosity 2
 
   # Playwright UI tests (tests/test_ui.py). conftest.py starts its own
   # `manage.py runserver` against the committed db.sqlite3, which holds the
@@ -64,4 +62,4 @@ jobs:
         run: python manage.py migrate --noinput
 
       - name: Run UI tests
-        run: pytest tests/ --verbosity 2
+        run: pytest tests/test_ui.py --verbosity 2
