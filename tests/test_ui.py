@@ -38,7 +38,7 @@ def test_target_abv_prefills_from_recipe(page):
 
 
 def test_calculate_formula(page):
-    """1.5 L / 96% spirit / 40% target → spirit ≈ 0.694 L, water ≈ 0.875 L."""
+    """1.5 L / 96% spirit / 40% target → spirit ≈ 0.63 L, water ≈ 0.88 L."""
     page.goto(BASE_URL)
     page.wait_for_function("document.getElementById('target_abv').value !== ''")
 
@@ -46,11 +46,14 @@ def test_calculate_formula(page):
     page.fill("#input_spirit_abv", "96")
     page.fill("#target_abv", "40")
 
-    # Page now calculates on input change, wait for results to appear
-    page.wait_for_selector("#results.show", timeout=5000)
+    # Wait for debounced JS calculate to produce the expected result
+    page.wait_for_function(
+        "() => document.getElementById('spirit-value').textContent === '0.63'",
+        timeout=5000,
+    )
 
     spirit = page.inner_text("#spirit-value")
     water  = page.inner_text("#water-value")
 
-    assert "0.694" in spirit, f"Wrong spirit value: {spirit!r}"
-    assert "0.875" in water,  f"Wrong water value: {water!r}"
+    assert "0.63" in spirit, f"Wrong spirit value: {spirit!r}"
+    assert "0.87" in water,  f"Wrong water value: {water!r}"
