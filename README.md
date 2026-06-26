@@ -23,7 +23,7 @@ A Django web application for scaling gin recipe ingredients based on desired vol
 - **Cucumber:** 30g
 - **Peppercorns:** 2.5g
 
-## Quick Start with Docker 🐳
+## Quick Start with Docker
 
 The fastest way to get started:
 
