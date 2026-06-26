@@ -1128,4 +1128,150 @@ body {
   text-overflow: ellipsis;
 }
 
+/* -- Still Dropdown -- */
+/* Allow the dropdown menu to escape the card's overflow:hidden clipping */
+.card--allow-overflow {
+  overflow: visible;
+}
+
+.still-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.still-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--color-text-primary);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.still-dropdown-toggle:hover {
+  border-color: var(--color-accent);
+}
+
+.still-dropdown-toggle:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
+}
+
+.still-dropdown-toggle[aria-expanded="true"] {
+  border-color: var(--color-accent);
+}
+
+.still-dropdown-selected {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.still-dropdown-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--color-surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.still-dropdown-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.still-dropdown-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.still-dropdown-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.still-dropdown-desc {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.still-dropdown-chevron {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  transition: transform 0.15s;
+}
+
+.still-dropdown-toggle[aria-expanded="true"] .still-dropdown-chevron {
+  transform: rotate(180deg);
+}
+
+.still-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  list-style: none;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.still-dropdown-menu[hidden] {
+  display: none;
+}
+
+.still-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.still-dropdown-item:hover {
+  background: var(--color-surface-2);
+}
+
+.still-dropdown-item.active {
+  background: var(--color-accent-dim);
+  border: 1px solid var(--color-accent);
+}
+
+.still-dropdown-item .still-dropdown-thumb {
+  width: 48px;
+  height: 48px;
+}
+
 

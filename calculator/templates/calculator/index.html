@@ -185,7 +185,7 @@
 
       <!-- Left column -->
       <section aria-label="{{ t.distill_params_aria }}">
-        <div class="card" style="margin-bottom:16px;">
+        <div class="card card--allow-overflow" style="margin-bottom:16px;">
           <div class="card-header">
             <span class="card-icon" aria-hidden="true">🔥</span>
             <h2>{{ t.still_select }}</h2>
@@ -326,7 +326,16 @@
       cuts_heads_note: "Heads (~10% of distillate): discard. Hearts: keep until ABV drops below target. Tails: blend back or use as base for second run.",
       cuts_low_abv_note: "Low-ABV wash - cut heads generously (~15%). Consider a second distillation for cleaner spirit.",
       results_placeholder: "Results appear automatically as you adjust parameters.",
-      varies_with_distillation: "varies with distillation output"
+      varies_with_distillation: "varies with distillation output",
+      still_select: "Select still type",
+      still_vevor_3l: "Vevor 3L Still",
+      still_selski_100: "Selski 100L",
+      still_selski_200: "Selski 200L",
+      still_selski_300: "Selski 300L",
+      still_desc_vevor: "Compact countertop water distiller",
+      still_desc_selski_100: "100L premium column still",
+      still_desc_selski_200: "200L premium column still",
+      still_desc_selski_300: "300L premium column still"
     },
     bg: {
       error_maceration_abv_lower: "\u0413\u0440\u0430\u0434\u0443\u0441\u044a\u0442 \u0437\u0430 \u043c\u0430\u0446\u0435\u0440\u0430\u0446\u0438\u044f \u0442\u0440\u044f\u0431\u0432\u0430 \u0434\u0430 \u0435 \u043f\u043e-\u043d\u0438\u0441\u044a\u043a \u043e\u0442 \u043d\u0430\u0447\u0430\u043b\u043d\u0438\u044f \u0430\u043b\u043a\u043e\u0445\u043e\u043b\u0435\u043d \u0433\u0440\u0430\u0434\u0443\u0441.",
@@ -343,7 +352,16 @@
       cuts_heads_note: "\u0413\u043b\u0430\u0432\u0438 (~10% \u043e\u0442 \u0434\u0435\u0441\u0442\u0438\u043b\u0430\u0442\u0430): \u0438\u0437\u0445\u0432\u044a\u0440\u043b\u0435\u0442\u0435. \u0421\u044a\u0440\u0446\u0435: \u0437\u0430\u0434\u0440\u044a\u0436\u0442\u0435 \u0434\u043e\u043a\u0430\u0442 \u0433\u0440\u0430\u0434\u0443\u0441\u044a\u0442 \u043f\u0430\u0434\u043d\u0435 \u043f\u043e\u0434 \u0446\u0435\u043b\u0435\u0432\u0438\u044f. \u041e\u043f\u0430\u0448\u043a\u0438: \u0441\u043c\u0435\u0441\u0435\u0442\u0435 \u043e\u0431\u0440\u0430\u0442\u043d\u043e \u0438\u043b\u0438 \u0438\u0437\u043f\u043e\u043b\u0437\u0432\u0430\u0439\u0442\u0435 \u043a\u0430\u0442\u043e \u043e\u0441\u043d\u043e\u0432\u0430 \u0437\u0430 \u0432\u0442\u043e\u0440\u0430 \u0434\u0435\u0441\u0442\u0438\u043b\u0430\u0446\u0438\u044f.",
       cuts_low_abv_note: "\u041c\u0430\u0442\u0435\u0440\u0438\u0430\u043b \u0441 \u043d\u0438\u0441\u044a\u043a \u0433\u0440\u0430\u0434\u0443\u0441 - \u043e\u0442\u0440\u0435\u0436\u0435\u0442\u0435 \u0433\u043b\u0430\u0432\u0438\u0442\u0435 \u0449\u0435\u0434\u0440\u043e (~15%). \u041f\u0440\u0435\u043f\u043e\u0440\u044a\u0447\u0438\u0442\u0435\u043b\u043d\u0430 \u0432\u0442\u043e\u0440\u0430 \u0434\u0435\u0441\u0442\u0438\u043b\u0430\u0446\u0438\u044f \u0437\u0430 \u043f\u043e-\u0447\u0438\u0441\u0442 \u0441\u043f\u0438\u0440\u0442.",
       results_placeholder: "\u0420\u0435\u0437\u0443\u043b\u0442\u0430\u0442\u0438\u0442\u0435 \u0441\u0435 \u043f\u043e\u044f\u0432\u044f\u0432\u0430\u0442 \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u043d\u043e \u043f\u0440\u0438 \u043f\u0440\u043e\u043c\u044f\u043d\u0430 \u043d\u0430 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u0438\u0442\u0435.",
-      varies_with_distillation: "\u0437\u0430\u0432\u0438\u0441\u0438 \u043e\u0442 \u0434\u0435\u0441\u0442\u0438\u043b\u0430\u0446\u0438\u043e\u043d\u043d\u0438\u044f \u0438\u0437\u0445\u043e\u0434"
+      varies_with_distillation: "\u0437\u0430\u0432\u0438\u0441\u0438 \u043e\u0442 \u0434\u0435\u0441\u0442\u0438\u043b\u0430\u0446\u0438\u043e\u043d\u043d\u0438\u044f \u0438\u0437\u0445\u043e\u0434",
+      still_select: "\u0418\u0437\u0431\u0435\u0440\u0435\u0442\u0435 \u0442\u0438\u043f \u043a\u0430\u0437\u0430\u043d",
+      still_vevor_3l: "Vevor 3L \u043a\u0430\u0437\u0430\u043d",
+      still_selski_100: "\u0421\u0435\u043b\u0441\u043a\u0438 100L",
+      still_selski_200: "\u0421\u0435\u043b\u0441\u043a\u0438 200L",
+      still_selski_300: "\u0421\u0435\u043b\u0441\u043a\u0438 300L",
+      still_desc_vevor: "\u041a\u043e\u043c\u043f\u0430\u043a\u0442\u0435\u043d \u043d\u0430\u0441\u0442\u043e\u043b\u0435\u043d \u0434\u0435\u0441\u0442\u0438\u043b\u0430\u0442\u043e\u0440",
+      still_desc_selski_100: "100L \u043f\u0440\u0435\u043c\u0438\u0443\u043c \u043a\u043e\u043b\u043e\u043d\u0435\u043d \u043a\u0430\u0437\u0430\u043d",
+      still_desc_selski_200: "200L \u043f\u0440\u0435\u043c\u0438\u0443\u043c \u043a\u043e\u043b\u043e\u043d\u0435\u043d \u043a\u0430\u0437\u0430\u043d",
+      still_desc_selski_300: "300L \u043f\u0440\u0435\u043c\u0438\u0443\u043c \u043a\u043e\u043b\u043e\u043d\u0435\u043d \u043a\u0430\u0437\u0430\u043d"
     }
   };
 
@@ -380,7 +398,7 @@
     const state = {
       recipeId: document.getElementById('recipe_select') ? document.getElementById('recipe_select').value : null,
       mode: getCurrentMode(),
-      selectedStill: document.querySelector('.still-card.active') ? document.querySelector('.still-card.active').dataset.still : null,
+      selectedStill: document.querySelector('.still-dropdown-item.active') ? document.querySelector('.still-dropdown-item.active').dataset.still : null,
       inputs: {}
     };
     const inputFields = ['input_spirit_abv', 'still_yield', 'maceration_abv', 'target_abv', 'volume',
@@ -399,6 +417,7 @@
       const recipeSelect = document.getElementById('recipe_select');
       if (recipeSelect && state.recipeId) {
         recipeSelect.value = state.recipeId;
+        // Trigger recipe change to load recipe data and update UI
         onRecipeChange();
       }
       for (const [field, value] of Object.entries(state.inputs)) {
@@ -664,7 +683,10 @@
   const debouncedCalculate = debounce(calculateLocally, 120);
 
   ['volume', 'input_spirit_abv', 'target_abv', 'still_yield', 'maceration_abv'].forEach(id => {
-    document.getElementById(id).addEventListener('input', debouncedCalculate);
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener('input', debouncedCalculate);
+    }
   });
 
   document.getElementById('ingredient-list').addEventListener('click', (e) => {
@@ -676,6 +698,7 @@
     pill.classList.add('active');
   });
 
+  document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('input[name="spirit_type"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       const yieldInput = document.getElementById('still_yield');
@@ -690,6 +713,7 @@
       calculateLocally();
     });
   });
+});
 
   // Mode switching
   document.getElementById('mode-compound').addEventListener('click', function() {
@@ -700,36 +724,93 @@
   document.getElementById('mode-distill').addEventListener('click', function() {
     setMode('distill');
     saveState();
-    if (!document.querySelector('.still-card.active')) {
+    if (!document.getElementById('still-dropdown-name').textContent ||
+        document.getElementById('still-dropdown-name').textContent === t('still_select')) {
       selectStill('vevor');
     }
     calculateDistill();
   });
 
-  // Still presets
+  document.getElementById('still-dropdown-toggle').addEventListener('click', toggleStillDropdown);
+
+  document.addEventListener('click', function(e) {
+    var dd = document.getElementById('still-dropdown');
+    if (dd && !dd.contains(e.target)) {
+      closeStillDropdown();
+    }
+  });
+
+   // Still presets
   var STILL_PRESETS = {
-    'vevor':     { wash_volume: 3,   wash_abv: 10, collection_abv: 63, distill_target_abv: 40 },
-    'selski-100': { wash_volume: 100, wash_abv: 8,  collection_abv: 63, distill_target_abv: 40 },
-    'selski-200': { wash_volume: 200, wash_abv: 8,  collection_abv: 63, distill_target_abv: 40 },
-    'selski-300': { wash_volume: 300, wash_abv: 8,  collection_abv: 63, distill_target_abv: 40 }
+    'vevor':      { nameKey: 'still_vevor_3l',    descKey: 'still_desc_vevor',    image: '{% static "calculator/images/still-vevor.jpg" %}', wash_volume: 3,   wash_abv: 10, collection_abv: 63, distill_target_abv: 40 },
+    'selski-100': { nameKey: 'still_selski_100',  descKey: 'still_desc_selski_100', image: '{% static "calculator/images/still-selski.jpg" %}', wash_volume: 100, wash_abv: 8,  collection_abv: 63, distill_target_abv: 40 },
+    'selski-200': { nameKey: 'still_selski_200',  descKey: 'still_desc_selski_200', image: '{% static "calculator/images/still-selski.jpg" %}', wash_volume: 200, wash_abv: 8,  collection_abv: 63, distill_target_abv: 40 },
+    'selski-300': { nameKey: 'still_selski_300',  descKey: 'still_desc_selski_300', image: '{% static "calculator/images/still-selski.jpg" %}', wash_volume: 300, wash_abv: 8,  collection_abv: 63, distill_target_abv: 40 }
   };
+
+  function renderStillDropdown() {
+    var menu = document.getElementById('still-dropdown-menu');
+    if (!menu) return;
+    menu.innerHTML = '';
+    Object.keys(STILL_PRESETS).forEach(function(key) {
+      var p = STILL_PRESETS[key];
+      var li = document.createElement('li');
+      li.className = 'still-dropdown-item';
+      li.setAttribute('role', 'option');
+      li.setAttribute('data-still', key);
+      li.innerHTML = '<div class="still-dropdown-thumb"><img src="' + p.image + '" alt=""></div>' +
+        '<div class="still-dropdown-text">' +
+          '<span class="still-dropdown-name">' + t(p.nameKey) + '</span>' +
+          '<span class="still-dropdown-desc">' + t(p.descKey) + '</span>' +
+        '</div>';
+      li.addEventListener('click', function() { selectStill(key); });
+      menu.appendChild(li);
+    });
+  }
 
   function selectStill(presetKey) {
     var preset = STILL_PRESETS[presetKey];
     if (!preset) return;
 
-    document.querySelectorAll('.still-card').forEach(function(card) {
-      card.classList.remove('active');
+    document.getElementById('still-dropdown-name').textContent = t(preset.nameKey);
+    document.getElementById('still-dropdown-desc').textContent = t(preset.descKey);
+    document.getElementById('still-dropdown-thumb').innerHTML = '<img src="' + preset.image + '" alt="">';
+
+    document.querySelectorAll('.still-dropdown-item').forEach(function(item) {
+      item.classList.toggle('active', item.dataset.still === presetKey);
     });
-    document.querySelector('.still-card[data-still="' + presetKey + '"]').classList.add('active');
 
     document.getElementById('wash_volume').value = preset.wash_volume;
     document.getElementById('wash_abv').value = preset.wash_abv;
     document.getElementById('collection_abv').value = preset.collection_abv;
     document.getElementById('distill_target_abv').value = preset.distill_target_abv;
 
+    closeStillDropdown();
     saveState();
     calculateDistill();
+  }
+
+  function openStillDropdown() {
+    var menu = document.getElementById('still-dropdown-menu');
+    var toggle = document.getElementById('still-dropdown-toggle');
+    menu.removeAttribute('hidden');
+    toggle.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeStillDropdown() {
+    var menu = document.getElementById('still-dropdown-menu');
+    var toggle = document.getElementById('still-dropdown-toggle');
+    menu.setAttribute('hidden', '');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleStillDropdown() {
+    var menu = document.getElementById('still-dropdown-menu');
+    if (menu.hasAttribute('hidden')) {
+      openStillDropdown();
+    } else {
+      closeStillDropdown();
+    }
   }
 
   // Distill calculations
@@ -766,6 +847,7 @@
 
   window.addEventListener('load', () => {
     onRecipeChange();
+    renderStillDropdown();
     restoreState();
   });
 
