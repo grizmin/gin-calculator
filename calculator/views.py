@@ -2,28 +2,49 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import GinRecipe, RecipeIngredient
+from .translations import TRANSLATIONS
 import json
+
+
+def detect_lang(request):
+    """Detect language: cookie > Accept-Language header > 'en'"""
+    cookie_lang = request.COOKIES.get('django_language')
+    if cookie_lang in TRANSLATIONS:
+        return cookie_lang
+    accept = request.META.get('HTTP_ACCEPT_LANGUAGE', '')
+    if accept:
+        first = accept.split(',')[0].split(';')[0].strip().lower()
+        if first.startswith('bg'):
+            return 'bg'
+    return 'en'
 
 
 def index(request):
     """Main calculator page"""
-    # Get all active recipes
+    lang = detect_lang(request)
+    t = TRANSLATIONS[lang]
+
     recipes = GinRecipe.objects.filter(is_active=True).prefetch_related('ingredients__ingredient')
-    
-    # Get default recipe or first available
     default_recipe = GinRecipe.objects.filter(is_default=True, is_active=True).first()
     if not default_recipe and recipes.exists():
         default_recipe = recipes.first()
-    
-    return render(request, 'calculator/index.html', {
+
+    response = render(request, 'calculator/index.html', {
         'recipes': recipes,
         'default_recipe': default_recipe,
+        'lang': lang,
+        't': t,
     })
+    response.set_cookie('django_language', lang, max_age=365*24*60*60)
+    return response
 
 
 @csrf_exempt
 def get_recipe(request):
     """Get recipe details for the frontend"""
+    lang = detect_lang(request)
+    t = TRANSLATIONS[lang]
+
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -34,7 +55,7 @@ def get_recipe(request):
             except GinRecipe.DoesNotExist:
                 return JsonResponse({
                     'success': False,
-                    'error': 'Recipe not found'
+                    'error': t['error_recipe_not_found']
                 })
             
             ingredients = []
@@ -64,7 +85,7 @@ def get_recipe(request):
         except (ValueError, json.JSONDecodeError) as e:
             return JsonResponse({
                 'success': False,
-                'error': 'Invalid input data'
+                'error': t['error_invalid_input']
             })
     
-    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+    return JsonResponse({'success': False, 'error': t['error_invalid_method']})

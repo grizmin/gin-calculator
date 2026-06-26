@@ -1,0 +1,190 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-26 18:41+0000\n"
+"PO-Revision-Date: 2026-06-26 21:40+0300\n"
+"Last-Translator: \n"
+"Language-Team: Bulgarian\n"
+"Language: bg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: calculator/templates/calculator/index.html:17
+msgid "Spirit Calculator"
+msgstr "Калкулатор за спиртни рецепти"
+
+#: calculator/templates/calculator/index.html:19
+msgid "Toggle light/dark mode"
+msgstr "Превключване на светъл/тъмен режим"
+
+#: calculator/templates/calculator/index.html:22
+msgid "Scale spirit recipes to any volume"
+msgstr "Мащабиране на спиртни рецепти до всякакъв обем"
+
+#: calculator/templates/calculator/index.html:31
+msgid "Compound - gin / aquavit"
+msgstr "Смесване - джин / аквавит"
+
+#: calculator/templates/calculator/index.html:32
+msgid "Distill - rakia / brandy"
+msgstr "Дистилация - ракия / бренди"
+
+#: calculator/templates/calculator/index.html:43
+msgid "Recipe"
+msgstr "Рецепта"
+
+#: calculator/templates/calculator/index.html:47
+msgid "Select recipe"
+msgstr "Избор на рецепта"
+
+#: calculator/templates/calculator/index.html:67
+msgid "Spirit type"
+msgstr "Тип спирт"
+
+#: calculator/templates/calculator/index.html:71
+msgid "Neutral / food-grade"
+msgstr "Нейтрален / хранен"
+
+#: calculator/templates/calculator/index.html:72
+msgid "~10-15% losses. Cut off at ~92C"
+msgstr "~10-15% загуби. Прекъсване при ~92°C"
+
+#: calculator/templates/calculator/index.html:76
+msgid "Home-distilled spirit"
+msgstr "Домашно дистилиран спирт"
+
+#: calculator/templates/calculator/index.html:77
+msgid "~30-35% losses. Cut off at ~88-90C"
+msgstr "~30-35% загуби. Прекъсване при ~88-90°C"
+
+#: calculator/templates/calculator/index.html:84
+msgid "Input spirit ABV"
+msgstr "Входен ABV спирт"
+
+#: calculator/templates/calculator/index.html:86
+msgid "Alcohol strength of the raw spirit you're starting with"
+msgstr "Силата на алкохола на суровия спирт, с който започвате"
+
+#: calculator/templates/calculator/index.html:91
+msgid "Still yield"
+msgstr "Ефективност на ректификацията"
+
+#: calculator/templates/calculator/index.html:93
+msgid ""
+"Percentage of liquid recovered from distillation after accounting for losses"
+msgstr "Процент на течността, възстановена след дистилация със съобразяване със загубите"
+
+#: calculator/templates/calculator/index.html:98
+msgid "Maceration ABV"
+msgstr "ABV при макерация"
+
+#: calculator/templates/calculator/index.html:100
+msgid ""
+"ABV to dilute the maceration charge down to partway through (e.g. after the "
+"neat phase)"
+msgstr "ABV за разредяване на макерационната течност до средата (напр. след неуталния фаз)"
+
+#: calculator/templates/calculator/index.html:105
+#: calculator/templates/calculator/index.html:211
+msgid "Target ABV"
+msgstr "Целеви ABV"
+
+#: calculator/templates/calculator/index.html:107
+msgid "Desired final alcohol percentage of the finished spirit"
+msgstr "Желано крайно алкохолно съдържание на завършения спирт"
+
+#: calculator/templates/calculator/index.html:112
+msgid "Desired volume"
+msgstr "Желан обем"
+
+#: calculator/templates/calculator/index.html:114
+msgid "Total amount of finished spirit you want to produce"
+msgstr "Общо количество завършен спирт, който искате да произведете"
+
+#: calculator/templates/calculator/index.html:123
+#: calculator/templates/calculator/index.html:225
+msgid "Results appear automatically as you adjust parameters."
+msgstr "Резултатите се показват автоматично при настройване на параметрите."
+
+#: calculator/templates/calculator/index.html:130
+msgid "Volumes"
+msgstr "Обеми"
+
+#: calculator/templates/calculator/index.html:135
+msgid "Maceration alc"
+msgstr "Алкохол при макерация"
+
+#: calculator/templates/calculator/index.html:141
+msgid "Maceration water needed"
+msgstr "Необходима вода за макерация"
+
+#: calculator/templates/calculator/index.html:147
+msgid "Est. Water"
+msgstr "Очаквана вода"
+
+#: calculator/templates/calculator/index.html:151
+msgid "varies with distillation output"
+msgstr "зависи от дистилационния изход"
+
+#: calculator/templates/calculator/index.html:159
+msgid "Botanicals"
+msgstr "Ботанически вещества"
+
+#: calculator/templates/calculator/index.html:179
+msgid "Wash &amp; Still"
+msgstr "Измиване и ректификация"
+
+#: calculator/templates/calculator/index.html:183
+msgid "Wash volume"
+msgstr "Обем за измиване"
+
+#: calculator/templates/calculator/index.html:190
+msgid "Wash ABV"
+msgstr "ABV при измиване"
+
+#: calculator/templates/calculator/index.html:197
+msgid "Still capacity"
+msgstr "Капацитет на ректификационната колона"
+
+#: calculator/templates/calculator/index.html:204
+msgid "Collection ABV"
+msgstr "ABV на събирането"
+
+#: calculator/templates/calculator/index.html:231
+msgid "Distillation Output"
+msgstr "Дистилационен изход"
+
+#: calculator/templates/calculator/index.html:236
+msgid "Pure alcohol"
+msgstr "Чист алкохол"
+
+#: calculator/templates/calculator/index.html:242
+msgid "Expected distillate"
+msgstr "Очакван дистилат"
+
+#: calculator/templates/calculator/index.html:248
+msgid "Batches needed"
+msgstr "Необходими партиди"
+
+#: calculator/templates/calculator/index.html:254
+msgid "Water to proof"
+msgstr "Вода за изпитване"
+
+#: calculator/templates/calculator/index.html:271
+msgid "No recipes available"
+msgstr "Няма налични рецепти"
+
+#: calculator/templates/calculator/index.html:272
+msgid "Ask an administrator to add a recipe to get started."
+msgstr "Моля, обърнете се към администратора, за да добави рецепта."
+
+#: calculator/templates/calculator/index.html:278
+msgid "Spirit Calculator - scale any recipe with confidence"
+msgstr "Калкулатор за спиртни рецепти - мащабиране на всяка рецепта с увереност"

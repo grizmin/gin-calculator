@@ -55,6 +55,11 @@ admin at /admin (admin/admin123).
 - Templates: `calculator/templates/calculator/index.html` (AJAX frontend).
 
 ## Conventions
+- **⛔ CRITICAL — NEVER run git commands without explicit user approval.**
+  `git restore`, `git reset`, `git checkout`, `git stash`, `git commit`,
+  `git push`, or ANY git operation that modifies the working tree, index,
+  or commit history. FILE EDITS ONLY. A previous agent deleted uncommitted
+  code by running `git restore .` — DO NOT REPEAT THIS.
 - Keep scaling math in views consistent (amounts rounded to 2 decimals).
 - When adding ingredients programmatically, respect `unique_together` and `order`.
 - Update/add tests in `calculator/tests.py` and run `python manage.py test`

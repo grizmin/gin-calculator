@@ -114,12 +114,17 @@ body {
   align-items: center;
   gap: 16px;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 .page-header .tagline {
   font-size: 0.8rem;
   color: var(--color-text-muted);
   font-weight: 400;
+  flex-shrink: 0;
+  white-space: nowrap;
+  /* Fixed width to prevent buttons shifting when tagline length changes */
+  width: 260px;
 }
 
 /* Theme toggle button */
@@ -958,6 +963,169 @@ body {
     padding: 10px 16px 12px;
     row-gap: 12px;
   }
+}
+
+/* -- Mode Toggle -- */
+.mode-toggle {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.mode-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-text-primary);
+}
+
+.mode-btn.active {
+  background: var(--color-accent-dim);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* -- Mode Panels -- */
+.mode-panel {
+  display: contents;
+}
+
+.mode-panel[hidden] > * {
+  display: none;
+}
+
+/* -- Language toggle -- */
+.lang-toggle {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  padding: 2px 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text-secondary);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: background var(--transition), border-color var(--transition);
+  flex-shrink: 0;
+}
+
+.lang-toggle:hover {
+  background: var(--color-surface-2);
+  border-color: var(--color-accent);
+}
+
+.lang-code {
+  letter-spacing: 0.04em;
+}
+
+/* -- Distill field styling -- */
+#distill-panel .field .params-input-wrap {
+  display: flex;
+  width: 100%;
+}
+
+#distill-panel .field .params-input {
+  width: 100%;
+  text-align: left;
+  padding: 9px 36px 9px 12px;
+  font-size: 0.9rem;
+}
+
+#distill-panel .field .params-unit {
+  right: 12px;
+  font-size: 0.72rem;
+}
+
+/* -- Still Selector -- */
+.still-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.still-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--color-surface-2);
+  border: 2px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+  text-align: left;
+  font-family: inherit;
+  color: var(--color-text-primary);
+}
+
+.still-card:hover {
+  border-color: var(--color-accent);
+  background: var(--color-accent-dim);
+}
+
+.still-card.active {
+  border-color: var(--color-accent);
+  background: var(--color-accent-dim);
+  box-shadow: 0 0 0 2px var(--color-accent-glow);
+}
+
+.still-card-image {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.still-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.still-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.still-card-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.still-card-desc {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
