@@ -38,7 +38,7 @@ def test_target_abv_prefills_from_recipe(page):
 
 
 def test_calculate_formula(page):
-    """1.5 L / 96% spirit / 40% target → spirit ≈ 0.63 L, water ≈ 0.88 L."""
+    """1.5 L / 96% spirit / 40% target / 85% yield → maceration alc ≈ 0.74 L, water ≈ 0.87 L."""
     page.goto(BASE_URL)
     page.wait_for_function("document.getElementById('target_abv').value !== ''")
 
@@ -47,13 +47,14 @@ def test_calculate_formula(page):
     page.fill("#target_abv", "40")
 
     # Wait for debounced JS calculate to produce the expected result
+    # spirit_to_load = (1.5 * 0.4 / 0.96) / 0.85 ≈ 0.73
     page.wait_for_function(
-        "() => document.getElementById('spirit-value').textContent === '0.63'",
+        "() => document.getElementById('spirit-load-value').textContent === '0.73'",
         timeout=5000,
     )
 
-    spirit = page.inner_text("#spirit-value")
+    spirit_load = page.inner_text("#spirit-load-value")
     water  = page.inner_text("#water-value")
 
-    assert "0.63" in spirit, f"Wrong spirit value: {spirit!r}"
+    assert "0.73" in spirit_load, f"Wrong spirit-to-load value: {spirit_load!r}"
     assert "0.87" in water,  f"Wrong water value: {water!r}"
