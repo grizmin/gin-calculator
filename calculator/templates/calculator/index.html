@@ -191,43 +191,19 @@
             <h2>{{ t.still_select }}</h2>
           </div>
           <div class="card-body">
-            <div class="still-selector">
-              <button class="still-card" data-still="vevor" type="button" onclick="selectStill('vevor')">
-                <div class="still-card-image">
-                  <img src="https://img.vevorstatic.com/us%2FDSDW1LH4L110V8WJBV1%2Foriginal_img-v11%2Fwater-distiller-m100-1.2.jpg?timestamp=1661511397000&format=webp&format=webp" alt="Vevor 3L">
+            <div class="still-dropdown" id="still-dropdown">
+              <button class="still-dropdown-toggle" type="button" id="still-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
+                <div class="still-dropdown-selected" id="still-dropdown-selected">
+                  <div class="still-dropdown-thumb" id="still-dropdown-thumb"></div>
+                  <div class="still-dropdown-text">
+                    <span class="still-dropdown-name" id="still-dropdown-name">{{ t.still_select }}</span>
+                    <span class="still-dropdown-desc" id="still-dropdown-desc"></span>
+                  </div>
                 </div>
-                <div class="still-card-info">
-                  <span class="still-card-name">{{ t.still_vevor_3l }}</span>
-                  <span class="still-card-desc">{{ t.still_desc_vevor }}</span>
-                </div>
+                <span class="still-dropdown-chevron" aria-hidden="true">▾</span>
               </button>
-              <button class="still-card" data-still="selski-100" type="button" onclick="selectStill('selski-100')">
-                <div class="still-card-image">
-                  <img src="https://mobile1.bg/wp-content/uploads/2025/08/100L-PH30Premium-Des.jpg" alt="Селски 100L">
-                </div>
-                <div class="still-card-info">
-                  <span class="still-card-name">{{ t.still_selski_100 }}</span>
-                  <span class="still-card-desc">{{ t.still_desc_selski_100 }}</span>
-                </div>
-              </button>
-              <button class="still-card" data-still="selski-200" type="button" onclick="selectStill('selski-200')">
-                <div class="still-card-image">
-                  <img src="https://mobile1.bg/wp-content/uploads/2025/08/100L-PH30Premium-Des.jpg" alt="Селски 200L">
-                </div>
-                <div class="still-card-info">
-                  <span class="still-card-name">{{ t.still_selski_200 }}</span>
-                  <span class="still-card-desc">{{ t.still_desc_selski_200 }}</span>
-                </div>
-              </button>
-              <button class="still-card" data-still="selski-300" type="button" onclick="selectStill('selski-300')">
-                <div class="still-card-image">
-                  <img src="https://mobile1.bg/wp-content/uploads/2025/08/100L-PH30Premium-Des.jpg" alt="Селски 300L">
-                </div>
-                <div class="still-card-info">
-                  <span class="still-card-name">{{ t.still_selski_300 }}</span>
-                  <span class="still-card-desc">{{ t.still_desc_selski_300 }}</span>
-                </div>
-              </button>
+              <ul class="still-dropdown-menu" id="still-dropdown-menu" role="listbox" hidden>
+              </ul>
             </div>
           </div>
         </div>
