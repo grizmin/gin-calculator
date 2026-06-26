@@ -35,8 +35,9 @@ else:
 "
 
 # Create default recipe
-echo "Setting up default recipe..."
+echo "Setting up recipes..."
 python manage.py create_default_recipe
+python manage.py create_famous_recipes
 
 echo "🚀 Starting server..."
 exec python manage.py runserver 0.0.0.0:8000
