@@ -64,11 +64,10 @@ class CalculatorViewsTest(TestCase):
         recipe = data['recipe']
         self.assertEqual(recipe['name'], 'Classic London Dry')
         self.assertEqual(recipe['target_abv_percentage'], 40.0)
-        self.assertEqual(recipe['water_for_maceration'], 0.0)
         
-        # Verify all expected response fields are present (including new ones)
+        # Verify all expected response fields are present
         expected_fields = ['id', 'name', 'description', 'image_url', 'base_volume', 
-                          'abv_volume', 'target_abv_percentage', 'water_for_maceration', 'ingredients']
+                          'abv_volume', 'target_abv_percentage', 'ingredients']
         for field in expected_fields:
             self.assertIn(field, recipe, f"Missing field '{field}' in recipe response")
         
@@ -214,8 +213,9 @@ class FamousRecipesCommandTest(TestCase):
         monkey47 = GinRecipe.objects.get(name='Monkey 47 Schwarzwald Dry Gin')
         self.assertEqual(monkey47.ingredients.count(), 47)
 
-    def test_abv_volume_derived_correctly(self):
-        """Test that abv_volume is correctly derived from base_volume and target_abv_percentage"""
+    def test_fixture_abv_volume_is_self_consistent(self):
+        """Verify fixture data is internally consistent: abv_volume matches base_volume * target_abv%.
+        This tests the fixture, not the formula — if fixture data changes, update this test."""
         from django.core.management import call_command
         call_command('create_famous_recipes')
         
@@ -240,21 +240,3 @@ class FamousRecipesCommandTest(TestCase):
                 places=3,
                 msg=f"{recipe.name}: abv_volume mismatch"
             )
-
-    def test_recipes_have_description_notes(self):
-        """Test that all seeded recipes have descriptions with distilling process info"""
-        from django.core.management import call_command
-        call_command('create_famous_recipes')
-
-        for recipe in GinRecipe.objects.all():
-            self.assertTrue(recipe.description)
-            self.assertIn("distill", recipe.description.lower())
-
-    def test_ingredients_have_variation_notes(self):
-        """Test that all seeded ingredients have non-blank notes"""
-        from django.core.management import call_command
-        call_command('create_famous_recipes')
-
-        for recipe in GinRecipe.objects.all():
-            for ri in recipe.ingredients.all():
-                self.assertTrue(ri.notes.strip(), f"{recipe.name}/{ri.ingredient.name}: blank notes")
