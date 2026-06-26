@@ -47,14 +47,14 @@ def test_calculate_formula(page):
     page.fill("#target_abv", "40")
 
     # Wait for debounced JS calculate to produce the expected result
-    # spirit_to_load = (1.5 * 0.4 / 0.96) / 0.85 ≈ 0.73
+    # spirit_to_load = (1.5 * 0.4 / 0.96) / 0.85 = 0.63 / 0.85 ≈ 0.74
     page.wait_for_function(
-        "() => document.getElementById('spirit-load-value').textContent === '0.73'",
+        "() => document.getElementById('spirit-load-value').textContent === '0.74'",
         timeout=5000,
     )
 
     spirit_load = page.inner_text("#spirit-load-value")
     water  = page.inner_text("#water-value")
 
-    assert "0.73" in spirit_load, f"Wrong spirit-to-load value: {spirit_load!r}"
+    assert "0.74" in spirit_load, f"Wrong spirit-to-load value: {spirit_load!r}"
     assert "0.87" in water,  f"Wrong water value: {water!r}"
