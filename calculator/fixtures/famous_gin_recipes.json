@@ -1,6 +1,7 @@
 [
   {
     "name": "Tanqueray London Dry",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Tanqueray_bottle.JPG",
     "description": "Tanqueray is distilled in traditional copper pot stills using a simple single-shot method. Only 4 botanicals are used — the fewest among major London Dry gins — making it deliberately juniper-forward. The spirit is 96% ABV neutral grain spirit, with botanicals macerated then distilled in one continuous process. No additives or sugar are permitted after distillation.",
     "base_volume": 1.0,
     "abv_volume": 0.473,
@@ -40,6 +41,7 @@
   },
   {
     "name": "Hendrick's",
+    "image_url": "https://upload.wikimedia.org/wikipedia/en/c/c6/Hendricks_Gin_Logo.jpg",
     "description": "Hendrick's is distilled in two separate stills: first a Carter-Head still for the base botanicals, then a Bennett pot still for the floral botanicals. After distillation, cucumber and rose essences are added post-distillation (not vapour-infused), giving its signature profile. The gin is bottled at 44% ABV. The two-still process separates the heavier botanicals from the delicate florals.",
     "base_volume": 1.0,
     "abv_volume": 0.44,
@@ -142,6 +144,7 @@
   },
   {
     "name": "Bombay Sapphire",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Bombay_Sapphire_-_bouteilles.JPG",
     "description": "Bombay Sapphire uses the Carter-Head vapour infusion process exclusively — botanicals are placed in a basket above the spirit (never touching the liquid), and vapour passes through them. This produces a lighter, more delicate gin compared to maceration methods. The base is 96.3% ABV wheat neutral spirit. All 10 botanicals are printed on the bottle. No sugar or additives after distillation.",
     "base_volume": 1.0,
     "abv_volume": 0.47,
@@ -223,6 +226,7 @@
   },
   {
     "name": "Beefeater London Dry",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/37/BEEFEATER2022_%28cropped%29.jpg",
     "description": "Beefeater follows the original 1895 recipe with a 24-hour maceration process — all 9 botanicals are steeped in 96% ABV grain spirit for a full day before distillation in a traditional copper pot still. This extended maceration extracts maximum flavour from the botanicals, particularly the Seville orange peel. The recipe has remained unchanged since its creation.",
     "base_volume": 1.0,
     "abv_volume": 0.40,
@@ -297,6 +301,7 @@
   },
   {
     "name": "Aviation American Gin",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Aviation_American_Gin_Distillery_filling_station.jpg",
     "description": "Aviation is a 'New Western' gin that deliberately de-emphasizes juniper in favour of floral and herbal botanicals. Produced at House Spirits Distillery in Portland, Oregon. Botanicals are steeped for 18 hours then re-distilled in a 400-gallon copper pot still. The lavender and Indian sarsaparilla give it a distinctive floral, earthy profile. Named after the Aviation cocktail.",
     "base_volume": 1.0,
     "abv_volume": 0.42,
@@ -364,6 +369,7 @@
   },
   {
     "name": "Gordon's London Dry",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Gordons_London_Dry_Gin_im_Regal.jpg",
     "description": "Gordon's is one of the oldest gin brands (established 1769), with a recipe that has remained largely unchanged. It uses a traditional London Dry process with maceration followed by distillation in copper pot stills. Notably produces a 'dry' gin with no added sugar. The 7-botanical bill is a classic, minimal profile. Bottled at 37.5% ABV in the UK (40% in the US).",
     "base_volume": 1.0,
     "abv_volume": 0.375,
@@ -424,6 +430,7 @@
   },
   {
     "name": "Monkey 47 Schwarzwald Dry Gin",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Monkey_47_-_Schwarzwald_Dry_Gin_-_Packshot.jpg",
     "description": "Monkey 47 is produced in the Black Forest (Schwarzwald), Germany, using a molasses-based neutral spirit rather than grain. The gin features 47 botanicals — the most of any major gin brand. Lingonberries are macerated for approximately one week as the 'base note', while the remaining 46 botanicals are added 36 hours before distillation. Distilled in a 1920s-era copper still. Bottled at 47% ABV. The botanicals include herbs, flowers, spices, and forest berries sourced from the Black Forest region.",
     "base_volume": 1.0,
     "abv_volume": 0.47,
@@ -764,6 +771,7 @@
   },
   {
     "name": "Sipsmith London Dry",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Sipsmith_London_Logo.png",
     "description": "Sipsmith was the first London distillery to operate legally in 150 years (opened 2009). Uses a single-shot distillation method in their copper pot still named 'Prudence'. The base is 100% wheat neutral spirit. All 10 botanicals are added in a single batch and distilled together. The gin is bottled at 41.6% ABV — an unusual strength chosen to balance flavour extraction. No additives or sugar after distillation.",
     "base_volume": 1.0,
     "abv_volume": 0.416,
