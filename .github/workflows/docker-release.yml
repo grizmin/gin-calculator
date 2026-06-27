@@ -1,19 +1,8 @@
-name: Build and Deploy Docker Image
+name: Release Docker Image
 
 on:
   push:
-    branches: [ "master", "main" ]
-  pull_request:
-    branches: [ "master", "main" ]
-  workflow_dispatch:
-    inputs:
-      deploy_to_dockerhub:
-        description: 'Deploy to Docker Hub?'
-        type: boolean
-        default: true # if it makes it to the main branch, we want to deploy it by default
-
-env:
-  IMAGE_NAME: gin-calculator
+    tags: [ "v*" ]
 
 jobs:
   build:
@@ -31,12 +20,11 @@ jobs:
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.IMAGE_NAME }}
+        images: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
         tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=raw,value=latest,enable={{is_default_branch}}
-          type=raw,value={{date 'YYYYMMDD-HHmmss'}}
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=raw,value=latest
 
     - name: Build Docker image
       id: build
@@ -74,7 +62,6 @@ jobs:
     name: Deploy to Docker Hub
     needs: build
     runs-on: ubuntu-latest
-    if: github.event.inputs.deploy_to_dockerhub == 'true' || github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
 
     steps:
     - name: Checkout repository
@@ -101,8 +88,9 @@ jobs:
       with:
         images: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}
         tags: |
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
           type=raw,value=latest
-          type=raw,value={{date 'YYYYMMDD-HHmmss'}}
 
     - name: Push to Docker Hub
       run: |
