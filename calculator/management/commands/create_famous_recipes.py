@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
-from calculator.models import GinRecipe, Ingredient, RecipeIngredient
+from calculator.models import GinRecipe
+from calculator.management.commands._helpers import get_superuser, create_recipe_ingredients
 import json
 import os
 
@@ -8,12 +8,8 @@ class Command(BaseCommand):
     help = 'Create famous gin recipes from fixture file'
 
     def handle(self, *args, **options):
-        # Get or create a default user (usually the first superuser)
-        admin_user = User.objects.filter(is_superuser=True).first()
+        admin_user = get_superuser(self)
         if not admin_user:
-            self.stdout.write(
-                self.style.WARNING('No superuser found. Please create a superuser first with: python manage.py createsuperuser')
-            )
             return
 
         # Exact image URLs per recipe name (source of truth for images).
@@ -67,16 +63,7 @@ class Command(BaseCommand):
             )
 
             # Create the ingredients
-            for ingredient_data in recipe_data['ingredients']:
-                ingredient, _ = Ingredient.objects.get_or_create(name=ingredient_data['name'])
-                RecipeIngredient.objects.create(
-                    recipe=recipe,
-                    ingredient=ingredient,
-                    amount=ingredient_data['amount'],
-                    is_optional=ingredient_data['is_optional'],
-                    notes=ingredient_data['notes'],
-                    order=ingredient_data['order']
-                )
+            create_recipe_ingredients(recipe, recipe_data['ingredients'])
 
             self.stdout.write(
                 self.style.SUCCESS(f'Successfully created recipe "{recipe.name}" with {len(recipe_data["ingredients"])} ingredients.')

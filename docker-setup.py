@@ -10,11 +10,12 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gin_calculator.settings')
 django.setup()
 
 from django.contrib.auth.models import User
-from calculator.models import GinRecipe, Ingredient, RecipeIngredient
+from calculator.models import GinRecipe
+from calculator.management.commands._helpers import create_recipe_ingredients
 
 def create_default_setup():
     """Create default admin user and recipe if they don't exist"""
-    
+
     # Create default admin user if no superuser exists
     if not User.objects.filter(is_superuser=True).exists():
         print("Creating default admin user...")
@@ -26,14 +27,14 @@ def create_default_setup():
         print("✅ Default admin user created: admin/admin123")
     else:
         print("ℹ️ Admin user already exists")
-    
+
     # Create default recipe if it doesn't exist
     if not GinRecipe.objects.filter(name='Classic London Dry').exists():
         print("Creating default recipe...")
-        
+
         # Get the admin user
         admin_user = User.objects.filter(is_superuser=True).first()
-        
+
         # Create the recipe
         recipe = GinRecipe.objects.create(
             name='Classic London Dry',
@@ -44,7 +45,7 @@ def create_default_setup():
             is_default=True,
             created_by=admin_user
         )
-        
+
         # Create ingredients
         ingredients = [
             {'name': 'Juniper Berries', 'amount': 33.0, 'order': 1},
@@ -54,17 +55,9 @@ def create_default_setup():
             {'name': 'Cucumber', 'amount': 30.0, 'order': 5},
             {'name': 'Peppercorns', 'amount': 2.5, 'order': 6},
         ]
-        
-        for ingredient_data in ingredients:
-            ingredient, _ = Ingredient.objects.get_or_create(name=ingredient_data['name'])
-            RecipeIngredient.objects.create(
-                recipe=recipe,
-                ingredient=ingredient,
-                amount=ingredient_data['amount'],
-                order=ingredient_data['order'],
-                is_optional=False
-            )
-        
+
+        create_recipe_ingredients(recipe, ingredients)
+
         print(f"✅ Default recipe '{recipe.name}' created with {len(ingredients)} ingredients")
     else:
         print("ℹ️ Default recipe already exists")

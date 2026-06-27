@@ -26,10 +26,10 @@ class GinRecipeAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Basic Information', {
-            'fields': ('name', 'description')
+            'fields': ('name', 'description', 'image_url')
         }),
         ('Recipe Details', {
-            'fields': ('base_volume', 'abv_volume', 'target_abv_percentage')
+            'fields': ('base_volume', 'abv_volume', 'target_abv_percentage', 'water_for_maceration')
         }),
         ('Settings', {
             'fields': ('is_active', 'is_default')

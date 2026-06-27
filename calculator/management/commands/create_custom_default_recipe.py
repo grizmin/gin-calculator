@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
-from calculator.models import GinRecipe, Ingredient, RecipeIngredient
+from calculator.models import GinRecipe
+from calculator.management.commands._helpers import get_superuser, create_recipe_ingredients
 
 
 class Command(BaseCommand):
@@ -14,12 +14,8 @@ class Command(BaseCommand):
         parser.add_argument('--ingredients', nargs='+', help='Ingredients in format "name:amount"')
 
     def handle(self, *args, **options):
-        # Get or create a default user (usually the first superuser)
-        admin_user = User.objects.filter(is_superuser=True).first()
+        admin_user = get_superuser(self)
         if not admin_user:
-            self.stdout.write(
-                self.style.WARNING('No superuser found. Please create a superuser first with: python manage.py createsuperuser')
-            )
             return
 
         # Check if default recipe already exists
@@ -31,10 +27,10 @@ class Command(BaseCommand):
 
         # Use provided name or default to "Classic London Dry"
         recipe_name = options.get('name') or "Classic London Dry"
-        
+
         # Use provided ABV percentage or default to 40.0
         abv_percentage = options.get('abv_percentage') or 40.0
-        
+
         # Validate ABV percentage
         if abv_percentage < 10 or abv_percentage > 99:
             self.stdout.write(
@@ -86,16 +82,7 @@ class Command(BaseCommand):
                 {'name': 'Peppercorns', 'amount': 2.5, 'order': 6},
             ]
 
-        # Create the ingredients
-        for ingredient_data in ingredients:
-            ingredient, _ = Ingredient.objects.get_or_create(name=ingredient_data['name'])
-            RecipeIngredient.objects.create(
-                recipe=recipe,
-                ingredient=ingredient,
-                amount=ingredient_data['amount'],
-                order=ingredient_data['order'],
-                is_optional=False
-            )
+        create_recipe_ingredients(recipe, ingredients)
 
         self.stdout.write(
             self.style.SUCCESS(f'Successfully created custom default recipe "{recipe.name}" with {len(ingredients)} ingredients.')
