@@ -3,6 +3,18 @@ from django.urls import reverse
 from calculator.models import GinRecipe, RecipeIngredient, Ingredient
 from django.contrib.auth.models import User
 
+FAMOUS_RECIPE_NAMES = [
+    'Tanqueray London Dry',
+    "Hendrick's",
+    'Bombay Sapphire',
+    'Beefeater London Dry',
+    'Aviation American Gin',
+    "Gordon's London Dry",
+    'Monkey 47 Schwarzwald Dry Gin',
+    'Sipsmith London Dry',
+]
+
+
 class CalculatorViewsTest(TestCase):
     def setUp(self):
         """Set up test data"""
@@ -150,36 +162,14 @@ class FamousRecipesCommandTest(TestCase):
     def test_creates_all_8_recipes(self):
         """Test that the command creates all 8 recipes"""
         # Delete any existing famous recipes
-        GinRecipe.objects.filter(
-            name__in=[
-                'Tanqueray London Dry',
-                "Hendrick's",
-                'Bombay Sapphire',
-                'Beefeater London Dry',
-                'Aviation American Gin',
-                "Gordon's London Dry",
-                'Monkey 47 Schwarzwald Dry Gin',
-                'Sipsmith London Dry'
-            ]
-        ).delete()
+        GinRecipe.objects.filter(name__in=FAMOUS_RECIPE_NAMES).delete()
         
         # Run the command by calling it directly
         from django.core.management import call_command
         call_command('create_famous_recipes')
         
         # Verify 8 recipes exist
-        famous_recipes = GinRecipe.objects.filter(
-            name__in=[
-                'Tanqueray London Dry',
-                "Hendrick's",
-                'Bombay Sapphire',
-                'Beefeater London Dry',
-                'Aviation American Gin',
-                "Gordon's London Dry",
-                'Monkey 47 Schwarzwald Dry Gin',
-                'Sipsmith London Dry'
-            ]
-        )
+        famous_recipes = GinRecipe.objects.filter(name__in=FAMOUS_RECIPE_NAMES)
         self.assertEqual(famous_recipes.count(), 8)
 
     def test_idempotent(self):
@@ -219,18 +209,7 @@ class FamousRecipesCommandTest(TestCase):
         from django.core.management import call_command
         call_command('create_famous_recipes')
         
-        recipes = GinRecipe.objects.filter(
-            name__in=[
-                'Tanqueray London Dry',
-                "Hendrick's",
-                'Bombay Sapphire',
-                'Beefeater London Dry',
-                'Aviation American Gin',
-                "Gordon's London Dry",
-                'Monkey 47 Schwarzwald Dry Gin',
-                'Sipsmith London Dry'
-            ]
-        )
+        recipes = GinRecipe.objects.filter(name__in=FAMOUS_RECIPE_NAMES)
         
         for recipe in recipes:
             expected_abv_volume = recipe.base_volume * (recipe.target_abv_percentage / 100)

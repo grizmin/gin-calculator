@@ -1,7 +1,6 @@
 import pytest
 from playwright.sync_api import expect
-
-BASE_URL = "http://127.0.0.1:8000"
+from tests.conftest import BASE_URL
 
 
 def test_page_loads(page):
