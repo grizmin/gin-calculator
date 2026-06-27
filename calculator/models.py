@@ -62,3 +62,14 @@ class RecipeIngredient(models.Model):
 
     def __str__(self):
         return f"{self.recipe.name} - {self.ingredient.name} ({self.amount}g)"
+
+
+class AppVersion(models.Model):
+    version = models.CharField(max_length=50)
+    deployed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-deployed_at']
+
+    def __str__(self):
+        return f"{self.version} ({self.deployed_at})"
