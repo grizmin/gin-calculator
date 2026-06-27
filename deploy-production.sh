@@ -2,7 +2,7 @@
 
 # Production deployment script for the gin calculator
 
-echo "🍸 Building Gin Calculator for Production..."
+echo "Building Gin Calculator for Production..."
 
 # Build the production image
 docker build -t gin-calculator:production \

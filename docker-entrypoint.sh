@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "🍸 Starting Gin Calculator setup..."
+echo "Starting Gin Calculator setup..."
 
 # Create volume directories if they don't exist
 mkdir -p /app/db_data

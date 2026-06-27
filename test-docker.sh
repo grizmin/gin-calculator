@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🧪 Testing Gin Calculator Docker Container..."
+echo "Testing Gin Calculator Docker Container..."
 
 # Function to check if container is running
 check_container() {

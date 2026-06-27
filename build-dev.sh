@@ -2,7 +2,7 @@
 
 # Simple build and run script for development (no persistent volumes)
 
-echo "🍸 Building Gin Calculator Docker Image (Development Mode)..."
+echo "Building Gin Calculator Docker Image (Development Mode)..."
 
 # Stop and remove existing container if it exists
 if [ "$(docker ps -q -f name=gin-calculator-dev)" ]; then
