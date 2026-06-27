@@ -561,6 +561,7 @@
     const scaleFactor = volume / currentRecipe.base_volume;
     const scaledIngredients = currentRecipe.ingredients.map(ing => ({
       name: ing.name,
+      name_bg: ing.name_bg,
       amount: Math.round(ing.amount * scaleFactor * 100) / 100,
       base_amount: ing.amount,
       is_optional: ing.is_optional,
@@ -625,7 +626,7 @@
 
       return '<div class="ingredient-row' + (ing.is_optional ? ' optional' : '') + '">' +
         '<div class="ingredient-row-left">' +
-          '<span class="ingredient-row-name">' + escHtml(ing.name) + '</span>' +
+          '<span class="ingredient-row-name">' + escHtml(window.__lang === 'bg' && ing.name_bg ? ing.name_bg : ing.name) + '</span>' +
           notes +
         '</div>' +
         '<div class="ingredient-row-right">' +

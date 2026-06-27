@@ -2,8 +2,14 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import GinRecipe, RecipeIngredient
-from .translations import TRANSLATIONS
+from .translations import TRANSLATIONS, INGREDIENT_NAMES_BG
 import json
+
+_INGREDIENT_NAMES_BG_NORM = {k.lower(): v for k, v in INGREDIENT_NAMES_BG.items()}
+
+
+def get_ingredient_name_bg(name_en):
+    return INGREDIENT_NAMES_BG.get(name_en) or _INGREDIENT_NAMES_BG_NORM.get(name_en.lower()) or name_en
 
 
 def detect_lang(request):
@@ -60,8 +66,10 @@ def get_recipe(request):
             
             ingredients = []
             for ri in recipe.ingredients.select_related('ingredient').all():
+                name_en = ri.ingredient.name
                 ingredients.append({
-                    'name': ri.ingredient.name,
+                    'name': name_en,
+                    'name_bg': get_ingredient_name_bg(name_en),
                     'amount': ri.amount,
                     'is_optional': ri.is_optional,
                     'notes': ri.notes
