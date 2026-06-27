@@ -24,9 +24,9 @@ def create_default_setup():
             email='admin@example.com',
             password='admin123'
         )
-        print("✅ Default admin user created: admin/admin123")
+        print("Default admin user created: admin/admin123")
     else:
-        print("ℹ️ Admin user already exists")
+        print("Admin user already exists")
 
     # Create default recipe if it doesn't exist
     if not GinRecipe.objects.filter(name='Classic London Dry').exists():
@@ -58,14 +58,14 @@ def create_default_setup():
 
         create_recipe_ingredients(recipe, ingredients)
 
-        print(f"✅ Default recipe '{recipe.name}' created with {len(ingredients)} ingredients")
+        print(f"Default recipe '{recipe.name}' created with {len(ingredients)} ingredients")
     else:
-        print("ℹ️ Default recipe already exists")
+        print("Default recipe already exists")
 
 if __name__ == '__main__':
     try:
         create_default_setup()
-        print("🍸 Docker setup completed successfully!")
+        print("Docker setup completed successfully!")
     except Exception as e:
-        print(f"❌ Setup failed: {e}")
+        print(f"Setup failed: {e}")
         exit(1)
