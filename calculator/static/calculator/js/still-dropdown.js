@@ -1,18 +1,14 @@
 /**
- * Still dropdown functionality for the Gin Calculator
+ * still-dropdown.js — Still dropdown behavior
+ * Uses window.STILL_PRESETS (provided inline in template).
  */
 
-import { STILL_PRESETS } from './still-presets.js';
-
-/**
- * Render still dropdown options
- */
-export function renderStillDropdown() {
+function renderStillDropdown() {
   var menu = document.getElementById('still-dropdown-menu');
   if (!menu) return;
   menu.innerHTML = '';
-  Object.keys(STILL_PRESETS).forEach(function(key) {
-    var p = STILL_PRESETS[key];
+  Object.keys(window.STILL_PRESETS).forEach(function(key) {
+    var p = window.STILL_PRESETS[key];
     var li = document.createElement('li');
     li.className = 'still-dropdown-item';
     li.setAttribute('role', 'option');
@@ -27,12 +23,8 @@ export function renderStillDropdown() {
   });
 }
 
-/**
- * Select a still preset
- * @param {string} presetKey - Key of the preset to select
- */
-export function selectStill(presetKey) {
-  var preset = STILL_PRESETS[presetKey];
+function selectStill(presetKey) {
+  var preset = window.STILL_PRESETS[presetKey];
   if (!preset) return;
 
   document.getElementById('still-dropdown-name').textContent = t(preset.nameKey);
@@ -53,20 +45,14 @@ export function selectStill(presetKey) {
   calculateDistill();
 }
 
-/**
- * Open the still dropdown
- */
-export function openStillDropdown() {
+function openStillDropdown() {
   var menu = document.getElementById('still-dropdown-menu');
   var toggle = document.getElementById('still-dropdown-toggle');
   menu.removeAttribute('hidden');
   toggle.setAttribute('aria-expanded', 'true');
 }
 
-/**
- * Close the still dropdown
- */
-export function closeStillDropdown() {
+function closeStillDropdown() {
   var menu = document.getElementById('still-dropdown-menu');
   var toggle = document.getElementById('still-dropdown-toggle');
   if (menu && toggle) {
@@ -75,22 +61,11 @@ export function closeStillDropdown() {
   }
 }
 
-/**
- * Toggle the still dropdown visibility
- */
-export function toggleStillDropdown() {
+function toggleStillDropdown() {
   var menu = document.getElementById('still-dropdown-menu');
   if (menu.hasAttribute('hidden')) {
     openStillDropdown();
   } else {
     closeStillDropdown();
   }
-}
-
-/**
- * Calculate distillation parameters
- */
-export function calculateDistill() {
-  // Implementation would go here
-  // This function would handle distillation calculations
 }

@@ -6,7 +6,7 @@ from tests.conftest import BASE_URL
 def test_page_loads(page):
     """Home page returns 200 and shows the calculator."""
     page.goto(BASE_URL)
-    expect(page.locator("h1")).to_contain_text("Gin")
+    expect(page.locator("h1")).to_contain_text("Calculator")
 
 
 def test_input_fields_present(page):

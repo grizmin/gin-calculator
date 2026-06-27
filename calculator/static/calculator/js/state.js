@@ -1,21 +1,13 @@
 /**
- * State management for the Gin Calculator
+ * state.js — Mode switching and state persistence
  */
 
-/**
- * Get current mode (compound or distill)
- * @returns {string} Current mode
- */
-export function getCurrentMode() {
-  const distillActive = document.getElementById('mode-distill').classList.contains('active');
+function getCurrentMode() {
+  var distillActive = document.getElementById('mode-distill').classList.contains('active');
   return distillActive ? 'distill' : 'compound';
 }
 
-/**
- * Set the current mode
- * @param {string} mode - Mode to set ('compound' or 'distill')
- */
-export function setMode(mode) {
+function setMode(mode) {
   if (mode === 'distill') {
     document.getElementById('compound-panel').setAttribute('hidden', '');
     document.getElementById('distill-panel').removeAttribute('hidden');
@@ -33,42 +25,36 @@ export function setMode(mode) {
   }
 }
 
-/**
- * Save current state to localStorage
- */
-export function saveState() {
-  const state = {
+function saveState() {
+  var state = {
     recipeId: document.getElementById('recipe_select') ? document.getElementById('recipe_select').value : null,
     mode: getCurrentMode(),
     selectedStill: document.querySelector('.still-dropdown-item.active') ? document.querySelector('.still-dropdown-item.active').dataset.still : null,
     inputs: {}
   };
-  const inputFields = ['input_spirit_abv', 'still_yield', 'maceration_abv', 'target_abv', 'volume',
-                       'wash_volume', 'wash_abv', 'collection_abv', 'distill_target_abv'];
-  inputFields.forEach(field => {
-    const input = document.getElementById(field);
+  var inputFields = ['input_spirit_abv', 'still_yield', 'maceration_abv', 'target_abv', 'volume',
+                     'wash_volume', 'wash_abv', 'collection_abv', 'distill_target_abv'];
+  inputFields.forEach(function(field) {
+    var input = document.getElementById(field);
     if (input) { state.inputs[field] = input.value; }
   });
   localStorage.setItem('calculator_state', JSON.stringify(state));
 }
 
-/**
- * Restore state from localStorage
- */
-export function restoreState() {
-  const savedState = localStorage.getItem('calculator_state');
+function restoreState() {
+  var savedState = localStorage.getItem('calculator_state');
   if (savedState) {
-    const state = JSON.parse(savedState);
-    const recipeSelect = document.getElementById('recipe_select');
+    var state = JSON.parse(savedState);
+    var recipeSelect = document.getElementById('recipe_select');
     if (recipeSelect && state.recipeId) {
       recipeSelect.value = state.recipeId;
-      // Trigger recipe change to load recipe data and update UI
       onRecipeChange();
     }
-    for (const [field, value] of Object.entries(state.inputs)) {
-      const input = document.getElementById(field);
+    Object.entries(state.inputs).forEach(function(entry) {
+      var field = entry[0], value = entry[1];
+      var input = document.getElementById(field);
       if (input) { input.value = value; }
-    }
+    });
     if (state.mode) {
       setMode(state.mode);
       if (state.mode === 'distill') {
