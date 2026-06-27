@@ -1,0 +1,858 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ t.page_title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="{% static 'calculator/calculator.css' %}">
+  <script>
+(function(){
+  var cookieMatch = document.cookie.match(/(?:^|;\s*)django_language=([^;]*)/);
+  var cookieLang = cookieMatch ? cookieMatch[1] : null;
+  if (cookieLang && localStorage.getItem('lang') !== cookieLang) {
+    localStorage.setItem('lang', cookieLang);
+  }
+})();
+  </script>
+</head>
+<body>
+<div class="page-wrapper">
+
+   <header class="page-header">
+        <span class="logo-icon" aria-hidden="true">🌿</span>
+        <h1>{{ t.page_title }}</h1>
+        <div class="header-controls">
+          <button id="lang-toggle" class="lang-toggle" aria-label="{{ t.switch_language }}">
+            <span class="lang-code" id="lang-code-display">{{ lang|upper }}</span>
+          </button>
+          <button id="theme-toggle" class="theme-toggle" aria-label="{{ t.toggle_theme }}">
+            <span class="theme-icon">🌙</span>
+          </button>
+          <span class="tagline">{{ t.tagline }}</span>
+        </div>
+      </header>
+
+  <main class="main-content">
+    {% if recipes %}
+
+    <!-- Mode toggle: spans both columns -->
+    <div class="mode-toggle" role="tablist">
+      <button id="mode-compound" class="mode-btn active" type="button" role="tab" aria-selected="true">{{ t.mode_compound }}</button>
+      <button id="mode-distill" class="mode-btn" type="button" role="tab" aria-selected="false">{{ t.mode_distill }}</button>
+    </div>
+
+    <!-- Compound panel -->
+    <div id="compound-panel" class="mode-panel">
+
+      <!-- Left column -->
+      <section aria-label="{{ t.recipe_settings_aria }}">
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-header">
+            <span class="card-icon" aria-hidden="true">📋</span>
+            <h2>{{ t.recipe }}</h2>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <label for="recipe_select">{{ t.select_recipe }}</label>
+              <select id="recipe_select" onchange="onRecipeChange()">
+                {% for recipe in recipes %}
+                  <option value="{{ recipe.id }}"{% if recipe == default_recipe %} selected{% endif %}>{{ recipe.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div id="recipe-image-wrap" class="recipe-image-wrap" hidden>
+              <img id="recipe-image" alt="">
+            </div>
+            <div id="recipe-description" class="recipe-description" role="note" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right column -->
+      <section aria-label="{{ t.calculation_results_aria }}" aria-live="polite">
+        <div class="params-bar card">
+
+          <div class="params-spirit-row">
+            <span class="params-group-label">{{ t.spirit_type }}</span>
+            <div class="spirit-toggle">
+              <label class="spirit-option">
+                <input type="radio" name="spirit_type" value="neutral" checked>
+                <span class="spirit-option-label">{{ t.spirit_neutral_label }}</span>
+                <span class="spirit-option-hint">{{ t.spirit_neutral_hint }}</span>
+              </label>
+              <label class="spirit-option">
+                <input type="radio" name="spirit_type" value="home">
+                <span class="spirit-option-label">{{ t.spirit_home_label }}</span>
+                <span class="spirit-option-hint">{{ t.spirit_home_hint }}</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="params-inputs-row">
+            <div class="params-group">
+              <label class="params-label" for="input_spirit_abv" id="pb-abv-label">{{ t.input_spirit_abv }}</label>
+              <div class="params-input-wrap">
+                <input class="params-input" type="number" id="input_spirit_abv" value="96" min="10" max="99" step="1" title="{{ t.input_spirit_abv_title }}">
+                <span class="params-unit">%</span>
+              </div>
+            </div>
+            <div class="params-group">
+              <label class="params-label" for="still_yield">{{ t.still_yield }}</label>
+              <div class="params-input-wrap" id="yield-field">
+                <input class="params-input" type="number" id="still_yield" value="85" min="10" max="100" step="1" title="{{ t.still_yield_title }}">
+                <span class="params-unit">%</span>
+              </div>
+            </div>
+            <div class="params-group">
+              <label class="params-label" for="maceration_abv">{{ t.maceration_abv }}</label>
+              <div class="params-input-wrap">
+                <input class="params-input" type="number" id="maceration_abv" value="50" min="5" max="95" step="1" title="{{ t.maceration_abv_title }}">
+                <span class="params-unit">%</span>
+              </div>
+            </div>
+            <div class="params-group">
+              <label class="params-label" for="target_abv">{{ t.target_abv }}</label>
+              <div class="params-input-wrap">
+                <input class="params-input" type="number" id="target_abv" value="40" min="10" max="99" step="1" title="{{ t.target_abv_title }}">
+                <span class="params-unit">%</span>
+              </div>
+            </div>
+            <div class="params-group params-group--volume">
+              <label class="params-label" for="volume">{{ t.desired_volume }}</label>
+              <div class="params-input-wrap">
+                <input class="params-input" type="number" id="volume" value="1" min="0.1" max="100" step="1" title="{{ t.desired_volume_title }}">
+                <span class="params-unit">L</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="results-placeholder" class="results-placeholder">
+          <span class="results-placeholder-icon" aria-hidden="true">🍸</span>
+          <p>{{ t.results_placeholder }}</p>
+        </div>
+
+        <div id="results" class="results-panel" aria-atomic="true">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-icon" aria-hidden="true">💧</span>
+              <h2>{{ t.volumes }}</h2>
+            </div>
+            <div class="card-body">
+              <div class="volumes-grid">
+                <div class="volume-stat spirit">
+                  <div class="volume-stat-label">{{ t.maceration_alc }}</div>
+                  <div class="volume-stat-value">
+                    <span id="spirit-load-value">—</span><span class="volume-stat-unit">L</span>
+                  </div>
+                </div>
+                <div class="volume-stat water">
+                  <div class="volume-stat-label">{{ t.maceration_water_needed }}</div>
+                  <div class="volume-stat-value">
+                    <span id="maceration-water-value">—</span><span class="volume-stat-unit">L</span>
+                  </div>
+                </div>
+                <div class="volume-stat water">
+                  <div class="volume-stat-label">{{ t.est_water }}</div>
+                  <div class="volume-stat-value">
+                    <span id="water-value">—</span><span class="volume-stat-unit">L</span>
+                  </div>
+                  <div class="volume-stat-note">{{ t.varies_with_distillation }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-icon" aria-hidden="true">🌿</span>
+              <h2>{{ t.botanicals }}</h2>
+              <span id="result-recipe-name" class="result-recipe-label"></span>
+            </div>
+            <div class="card-body">
+              <div id="ingredient-list" class="ingredient-list"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Distill panel -->
+    <div id="distill-panel" class="mode-panel" hidden>
+
+      <!-- Left column -->
+      <section aria-label="{{ t.distill_params_aria }}">
+        <div class="card card--allow-overflow" style="margin-bottom:16px;">
+          <div class="card-header">
+            <span class="card-icon" aria-hidden="true">🔥</span>
+            <h2>{{ t.still_select }}</h2>
+          </div>
+          <div class="card-body">
+            <div class="still-dropdown" id="still-dropdown">
+              <button class="still-dropdown-toggle" type="button" id="still-dropdown-toggle" aria-haspopup="listbox" aria-expanded="false">
+                <div class="still-dropdown-selected" id="still-dropdown-selected">
+                  <div class="still-dropdown-thumb" id="still-dropdown-thumb"></div>
+                  <div class="still-dropdown-text">
+                    <span class="still-dropdown-name" id="still-dropdown-name">{{ t.still_select }}</span>
+                    <span class="still-dropdown-desc" id="still-dropdown-desc"></span>
+                  </div>
+                </div>
+                <span class="still-dropdown-chevron" aria-hidden="true">▾</span>
+              </button>
+              <ul class="still-dropdown-menu" id="still-dropdown-menu" role="listbox" hidden>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-icon" aria-hidden="true">⚙️</span>
+            <h2>{{ t.distill_params_aria }}</h2>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <label for="wash_volume">{{ t.wash_volume }}</label>
+              <div class="params-input-wrap">
+                <input class="params-input" type="number" id="wash_volume" value="3" min="1" max="1000" step="1">
+                <span class="params-unit">L</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="wash_abv">{{ t.wash_abv }}</label>
+              <div class="params-input-wrap">
+                <input class="params-input" type="number" id="wash_abv" value="10" min="1" max="30" step="1">
+                <span class="params-unit">%</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="collection_abv">{{ t.collection_abv }}</label>
+              <div class="params-input-wrap">
+                <input class="params-input" type="number" id="collection_abv" value="63" min="10" max="96" step="1">
+                <span class="params-unit">%</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="distill_target_abv">{{ t.distill_target_abv }}</label>
+              <div class="params-input-wrap">
+                <input class="params-input" type="number" id="distill_target_abv" value="40" min="10" max="96" step="1">
+                <span class="params-unit">%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right column -->
+      <section aria-label="{{ t.distill_results_aria }}" aria-live="polite">
+        <div id="distill-results-placeholder" class="results-placeholder">
+          <span class="results-placeholder-icon" aria-hidden="true">🔥</span>
+          <p>{{ t.results_placeholder }}</p>
+        </div>
+        <div id="distill-results" class="results-panel" aria-atomic="true">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-icon" aria-hidden="true">🧪</span>
+              <h2>{{ t.distillation_output }}</h2>
+            </div>
+            <div class="card-body">
+              <div class="volumes-grid">
+                <div class="volume-stat spirit">
+                  <div class="volume-stat-label">{{ t.pure_alcohol }}</div>
+                  <div class="volume-stat-value">
+                    <span id="d-pure-alcohol">—</span><span class="volume-stat-unit">L</span>
+                  </div>
+                </div>
+                <div class="volume-stat water">
+                  <div class="volume-stat-label">{{ t.expected_distillate }}</div>
+                  <div class="volume-stat-value">
+                    <span id="d-expected-distillate">—</span><span class="volume-stat-unit">L</span>
+                  </div>
+                </div>
+                <div class="volume-stat">
+                  <div class="volume-stat-label">{{ t.batches_needed }}</div>
+                  <div class="volume-stat-value">
+                    <span id="d-batches-needed">—</span>
+                  </div>
+                </div>
+                <div class="volume-stat water">
+                  <div class="volume-stat-label">{{ t.water_to_proof }}</div>
+                  <div class="volume-stat-value">
+                    <span id="d-water-to-proof">—</span><span class="volume-stat-unit">L</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    {% else %}
+    <div class="empty-state" style="grid-column:1/-1;">
+      <div class="empty-state-icon" aria-hidden="true">🌿</div>
+      <h2>{{ t.no_recipes }}</h2>
+      <p>{{ t.no_recipes_hint }}</p>
+    </div>
+    {% endif %}
+  </main>
+
+  <footer class="page-footer">
+    {{ t.footer_text }}
+  </footer>
+
+</div>
+
+<script>
+  'use strict';
+
+  window.__lang = '{{ lang }}';
+  window.__t = {
+    en: {
+      error_maceration_abv_lower: "Maceration ABV must be lower than the input spirit ABV.",
+      error_spirit_abv_higher: "Input spirit ABV must be higher than the target ABV.",
+      hearts_cut_abv: "Hearts cut ABV",
+      input_spirit_abv: "Input spirit ABV",
+      optional_badge: "Optional",
+      base_recipe_tooltip: "Base recipe (1L)",
+      var_min_label: "Minimum amount",
+      var_base_label: "Base",
+      var_max_label: "Maximum amount",
+      var_min_title: "Min",
+      var_max_title: "Max",
+      cuts_heads_note: "Heads (~10% of distillate): discard. Hearts: keep until ABV drops below target. Tails: blend back or use as base for second run.",
+      cuts_low_abv_note: "Low-ABV wash - cut heads generously (~15%). Consider a second distillation for cleaner spirit.",
+      results_placeholder: "Results appear automatically as you adjust parameters.",
+      varies_with_distillation: "varies with distillation output",
+      still_select: "Select still type",
+      still_vevor_3l: "Vevor 3L Still",
+      still_selski_100: "Selski 100L",
+      still_selski_200: "Selski 200L",
+      still_selski_300: "Selski 300L",
+      still_desc_vevor: "Compact countertop water distiller",
+      still_desc_selski_100: "100L premium column still",
+      still_desc_selski_200: "200L premium column still",
+      still_desc_selski_300: "300L premium column still"
+    },
+    bg: {
+      error_maceration_abv_lower: "\u0413\u0440\u0430\u0434\u0443\u0441\u044a\u0442 \u0437\u0430 \u043c\u0430\u0446\u0435\u0440\u0430\u0446\u0438\u044f \u0442\u0440\u044f\u0431\u0432\u0430 \u0434\u0430 \u0435 \u043f\u043e-\u043d\u0438\u0441\u044a\u043a \u043e\u0442 \u043d\u0430\u0447\u0430\u043b\u043d\u0438\u044f \u0430\u043b\u043a\u043e\u0445\u043e\u043b\u0435\u043d \u0433\u0440\u0430\u0434\u0443\u0441.",
+      error_spirit_abv_higher: "\u041d\u0430\u0447\u0430\u043b\u043d\u0438\u044f\u0442 \u0430\u043b\u043a\u043e\u0445\u043e\u043b\u0435\u043d \u0433\u0440\u0430\u0434\u0443\u0441 \u0442\u0440\u044f\u0431\u0432\u0430 \u0434\u0430 \u0435 \u043f\u043e-\u0432\u0438\u0441\u043e\u043a \u043e\u0442 \u0446\u0435\u043b\u0435\u0432\u0438\u044f.",
+      hearts_cut_abv: "\u0413\u0440\u0430\u0434\u0443\u0441 \u043d\u0430 \u0441\u044a\u0440\u0446\u0435\u0442\u043e",
+      input_spirit_abv: "\u041d\u0430\u0447\u0430\u043b\u0435\u043d \u0430\u043b\u043a\u043e\u0445\u043e\u043b\u0435\u043d \u0433\u0440\u0430\u0434\u0443\u0441",
+      optional_badge: "\u041e\u043f\u0446\u0438\u043e\u043d\u0430\u043b\u043d\u043e",
+      base_recipe_tooltip: "\u0411\u0430\u0437\u043e\u0432\u0430 \u0440\u0435\u0446\u0435\u043f\u0442\u0430 (1L)",
+      var_min_label: "\u041c\u0438\u043d\u0438\u043c\u0430\u043b\u043d\u043e \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e",
+      var_base_label: "\u041e\u0441\u043d\u043e\u0432\u0430",
+      var_max_label: "\u041c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u043d\u043e \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e",
+      var_min_title: "\u041c\u0438\u043d",
+      var_max_title: "\u041c\u0430\u043a\u0441",
+      cuts_heads_note: "\u0413\u043b\u0430\u0432\u0438 (~10% \u043e\u0442 \u0434\u0435\u0441\u0442\u0438\u043b\u0430\u0442\u0430): \u0438\u0437\u0445\u0432\u044a\u0440\u043b\u0435\u0442\u0435. \u0421\u044a\u0440\u0446\u0435: \u0437\u0430\u0434\u0440\u044a\u0436\u0442\u0435 \u0434\u043e\u043a\u0430\u0442 \u0433\u0440\u0430\u0434\u0443\u0441\u044a\u0442 \u043f\u0430\u0434\u043d\u0435 \u043f\u043e\u0434 \u0446\u0435\u043b\u0435\u0432\u0438\u044f. \u041e\u043f\u0430\u0448\u043a\u0438: \u0441\u043c\u0435\u0441\u0435\u0442\u0435 \u043e\u0431\u0440\u0430\u0442\u043d\u043e \u0438\u043b\u0438 \u0438\u0437\u043f\u043e\u043b\u0437\u0432\u0430\u0439\u0442\u0435 \u043a\u0430\u0442\u043e \u043e\u0441\u043d\u043e\u0432\u0430 \u0437\u0430 \u0432\u0442\u043e\u0440\u0430 \u0434\u0435\u0441\u0442\u0438\u043b\u0430\u0446\u0438\u044f.",
+      cuts_low_abv_note: "\u041c\u0430\u0442\u0435\u0440\u0438\u0430\u043b \u0441 \u043d\u0438\u0441\u044a\u043a \u0433\u0440\u0430\u0434\u0443\u0441 - \u043e\u0442\u0440\u0435\u0436\u0435\u0442\u0435 \u0433\u043b\u0430\u0432\u0438\u0442\u0435 \u0449\u0435\u0434\u0440\u043e (~15%). \u041f\u0440\u0435\u043f\u043e\u0440\u044a\u0447\u0438\u0442\u0435\u043b\u043d\u0430 \u0432\u0442\u043e\u0440\u0430 \u0434\u0435\u0441\u0442\u0438\u043b\u0430\u0446\u0438\u044f \u0437\u0430 \u043f\u043e-\u0447\u0438\u0441\u0442 \u0441\u043f\u0438\u0440\u0442.",
+      results_placeholder: "\u0420\u0435\u0437\u0443\u043b\u0442\u0430\u0442\u0438\u0442\u0435 \u0441\u0435 \u043f\u043e\u044f\u0432\u044f\u0432\u0430\u0442 \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u043d\u043e \u043f\u0440\u0438 \u043f\u0440\u043e\u043c\u044f\u043d\u0430 \u043d\u0430 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u0438\u0442\u0435.",
+      varies_with_distillation: "\u0437\u0430\u0432\u0438\u0441\u0438 \u043e\u0442 \u0434\u0435\u0441\u0442\u0438\u043b\u0430\u0446\u0438\u043e\u043d\u043d\u0438\u044f \u0438\u0437\u0445\u043e\u0434",
+      still_select: "\u0418\u0437\u0431\u0435\u0440\u0435\u0442\u0435 \u0442\u0438\u043f \u043a\u0430\u0437\u0430\u043d",
+      still_vevor_3l: "Vevor 3L \u043a\u0430\u0437\u0430\u043d",
+      still_selski_100: "\u0421\u0435\u043b\u0441\u043a\u0438 100L",
+      still_selski_200: "\u0421\u0435\u043b\u0441\u043a\u0438 200L",
+      still_selski_300: "\u0421\u0435\u043b\u0441\u043a\u0438 300L",
+      still_desc_vevor: "\u041a\u043e\u043c\u043f\u0430\u043a\u0442\u0435\u043d \u043d\u0430\u0441\u0442\u043e\u043b\u0435\u043d \u0434\u0435\u0441\u0442\u0438\u043b\u0430\u0442\u043e\u0440",
+      still_desc_selski_100: "100L \u043f\u0440\u0435\u043c\u0438\u0443\u043c \u043a\u043e\u043b\u043e\u043d\u0435\u043d \u043a\u0430\u0437\u0430\u043d",
+      still_desc_selski_200: "200L \u043f\u0440\u0435\u043c\u0438\u0443\u043c \u043a\u043e\u043b\u043e\u043d\u0435\u043d \u043a\u0430\u0437\u0430\u043d",
+      still_desc_selski_300: "300L \u043f\u0440\u0435\u043c\u0438\u0443\u043c \u043a\u043e\u043b\u043e\u043d\u0435\u043d \u043a\u0430\u0437\u0430\u043d"
+    }
+  };
+
+  function t(key) {
+    var dict = window.__t[window.__lang] || window.__t['en'];
+    return dict[key] || key;
+  }
+
+  // State preservation for language switching
+  function getCurrentMode() {
+    const distillActive = document.getElementById('mode-distill').classList.contains('active');
+    return distillActive ? 'distill' : 'compound';
+  }
+
+  function setMode(mode) {
+    if (mode === 'distill') {
+      document.getElementById('compound-panel').setAttribute('hidden', '');
+      document.getElementById('distill-panel').removeAttribute('hidden');
+      document.getElementById('mode-compound').classList.remove('active');
+      document.getElementById('mode-distill').classList.add('active');
+      document.getElementById('mode-compound').setAttribute('aria-selected', 'false');
+      document.getElementById('mode-distill').setAttribute('aria-selected', 'true');
+    } else {
+      document.getElementById('compound-panel').removeAttribute('hidden');
+      document.getElementById('distill-panel').setAttribute('hidden', '');
+      document.getElementById('mode-compound').classList.add('active');
+      document.getElementById('mode-distill').classList.remove('active');
+      document.getElementById('mode-compound').setAttribute('aria-selected', 'true');
+      document.getElementById('mode-distill').setAttribute('aria-selected', 'false');
+    }
+  }
+
+  function saveState() {
+    const state = {
+      recipeId: document.getElementById('recipe_select') ? document.getElementById('recipe_select').value : null,
+      mode: getCurrentMode(),
+      selectedStill: document.querySelector('.still-dropdown-item.active') ? document.querySelector('.still-dropdown-item.active').dataset.still : null,
+      inputs: {}
+    };
+    const inputFields = ['input_spirit_abv', 'still_yield', 'maceration_abv', 'target_abv', 'volume',
+                         'wash_volume', 'wash_abv', 'collection_abv', 'distill_target_abv'];
+    inputFields.forEach(field => {
+      const input = document.getElementById(field);
+      if (input) { state.inputs[field] = input.value; }
+    });
+    localStorage.setItem('calculator_state', JSON.stringify(state));
+  }
+
+  function restoreState() {
+    const savedState = localStorage.getItem('calculator_state');
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      const recipeSelect = document.getElementById('recipe_select');
+      if (recipeSelect && state.recipeId) {
+        recipeSelect.value = state.recipeId;
+        // Trigger recipe change to load recipe data and update UI
+        onRecipeChange();
+      }
+      for (const [field, value] of Object.entries(state.inputs)) {
+        const input = document.getElementById(field);
+        if (input) { input.value = value; }
+      }
+      if (state.mode) {
+        setMode(state.mode);
+        if (state.mode === 'distill') {
+          if (state.selectedStill) {
+            selectStill(state.selectedStill);
+          }
+          calculateDistill();
+        }
+      }
+    }
+  }
+
+  // Language toggle
+  document.getElementById('lang-toggle').addEventListener('click', function() {
+    saveState();
+    var currentLang = localStorage.getItem('lang') || 'en';
+    var newLang = currentLang === 'bg' ? 'en' : 'bg';
+    localStorage.setItem('lang', newLang);
+    document.cookie = 'django_language=' + newLang + ';path=/;max-age=' + (365*24*60*60);
+    window.location.reload();
+  });
+
+  let currentRecipe = null;
+
+  function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    } else if (prefersLight) {
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    updateThemeIcon();
+  }
+
+  function updateThemeIcon() {
+    const theme = document.documentElement.getAttribute('data-theme');
+    const icon = document.querySelector('.theme-icon');
+    if (icon) {
+      icon.textContent = theme === 'light' ? '☀️' : '🌙';
+    }
+  }
+
+  function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon();
+  }
+
+  document.addEventListener('DOMContentLoaded', initTheme);
+
+  function loadRecipeDetails(recipeId) {
+    return fetch('/get-recipe/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ recipe_id: parseInt(recipeId) }),
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.success) { console.error('Recipe load error:', data.error); return null; }
+      currentRecipe = data.recipe;
+      renderRecipeImage(data.recipe);
+      renderRecipeDescription(data.recipe);
+      const targetInput = document.getElementById('target_abv');
+      if (targetInput && data.recipe.target_abv_percentage) {
+        targetInput.value = data.recipe.target_abv_percentage;
+      }
+      return data.recipe;
+    })
+    .catch(err => {
+      console.error('Failed to load recipe:', err);
+      throw err;
+    });
+  }
+
+  async function onRecipeChange() {
+    const select = document.getElementById('recipe_select');
+    const recipeId = select.value;
+    await loadRecipeDetails(recipeId);
+    calculateLocally();
+  }
+
+  function renderRecipeImage(recipe) {
+    const wrap = document.getElementById('recipe-image-wrap');
+    const img = document.getElementById('recipe-image');
+    if (!wrap || !img) return;
+    const url = (recipe.image_url || '').trim();
+    if (!url || !/^https:\/\//i.test(url)) {
+      wrap.hidden = true;
+      img.removeAttribute('src');
+      return;
+    }
+    img.alt = recipe.name || '';
+    img.onerror = function () { wrap.hidden = true; };
+    img.onload = function () { wrap.hidden = false; };
+    img.src = url;
+  }
+
+  function renderRecipeDescription(recipe) {
+    const el = document.getElementById('recipe-description');
+    if (recipe.description) {
+      const safeName = escHtml(recipe.name);
+      el.innerHTML = '<strong>' + safeName + '</strong>' + escHtml(recipe.description);
+      el.classList.add('show');
+    } else {
+      el.classList.remove('show');
+    }
+  }
+
+  function calculateLocally() {
+    const volume = parseFloat(document.getElementById('volume').value);
+    const inputSpiritAbv = parseFloat(document.getElementById('input_spirit_abv').value);
+    const targetAbv = parseFloat(document.getElementById('target_abv').value);
+    const stillYield = parseFloat(document.getElementById('still_yield').value) || 85;
+    const macerationAbv = parseFloat(document.getElementById('maceration_abv').value);
+
+    if (!currentRecipe) return;
+    if (!volume || volume <= 0) return;
+    if (!inputSpiritAbv || inputSpiritAbv <= 0) return;
+    if (!targetAbv || targetAbv <= 0) return;
+
+    if (!macerationAbv || macerationAbv <= 0 || macerationAbv >= inputSpiritAbv) {
+      document.getElementById('results-placeholder').style.display = '';
+      document.getElementById('results').classList.remove('show');
+      document.getElementById('results-placeholder').innerHTML =
+        '<span class="results-placeholder-icon" aria-hidden="true">⚠️</span>' +
+        '<p>' + t('error_maceration_abv_lower') + '</p>';
+      return;
+    }
+
+    const scaleFactor = volume / currentRecipe.base_volume;
+    const scaledIngredients = currentRecipe.ingredients.map(ing => ({
+      name: ing.name,
+      name_bg: ing.name_bg,
+      amount: Math.round(ing.amount * scaleFactor * 100) / 100,
+      base_amount: ing.amount,
+      is_optional: ing.is_optional,
+      notes: ing.notes
+    }));
+
+    const spiritNeeded = Math.round(
+      ((volume * targetAbv / 100) / (inputSpiritAbv / 100)) * 100
+    ) / 100;
+    const waterToAdd = Math.round((volume - spiritNeeded) * 100) / 100;
+
+    if (waterToAdd < 0) {
+      document.getElementById('results-placeholder').style.display = '';
+      document.getElementById('results').classList.remove('show');
+      document.getElementById('results-placeholder').innerHTML =
+        '<span class="results-placeholder-icon" aria-hidden="true">⚠️</span>' +
+        '<p>' + t('error_spirit_abv_higher') + '</p>';
+      return;
+    }
+
+    const spiritToLoad = Math.round((spiritNeeded / (stillYield / 100)) * 100) / 100;
+    const waterForMaceration = Math.round(
+      (spiritToLoad * (inputSpiritAbv / macerationAbv - 1)) * 100
+    ) / 100;
+
+    renderResults({
+      success: true,
+      recipe_name: currentRecipe.name,
+      spirit_needed: spiritNeeded,
+      water_to_add: waterToAdd,
+      spirit_to_load: spiritToLoad,
+      maceration_water: waterForMaceration,
+      scaled_ingredients: scaledIngredients
+    });
+  }
+
+  function renderResults(data) {
+    document.getElementById('spirit-load-value').textContent = data.spirit_to_load || data.spirit_needed;
+    document.getElementById('maceration-water-value').textContent = data.maceration_water;
+    document.getElementById('water-value').textContent = data.water_to_add;
+    document.getElementById('result-recipe-name').textContent = data.recipe_name;
+
+    const list = document.getElementById('ingredient-list');
+    list.innerHTML = data.scaled_ingredients.map((ing, idx) => {
+      const parsed = parseVariation(ing.notes);
+      const notes = ing.notes ? '<span class="ingredient-row-notes">' + escHtml(ing.notes) + '</span>' : '';
+      const badge = ing.is_optional ? '<span class="optional-badge">' + t('optional_badge') + '</span>' : '';
+      const key = 'var-' + idx;
+
+      let amountHtml;
+      if (parsed.pct > 0) {
+        const minVal = (ing.amount * (1 - parsed.pct / 100)).toFixed(2);
+        const maxVal = (ing.amount * (1 + parsed.pct / 100)).toFixed(2);
+        amountHtml = '<span class="variation-pills" data-key="' + key + '" data-min="' + minVal + '" data-base="' + ing.amount + '" data-max="' + maxVal + '">' +
+          '<button class="var-pill var-min" data-state="min" aria-label="' + t('var_min_label') + '" title="' + t('var_min_title') + ' (−' + parsed.pct + '%)">' + minVal + '</button>' +
+          '<button class="var-pill var-base active" data-state="base" aria-label="' + t('var_base_label') + '" title="' + t('var_base_label') + '">' + ing.amount + '</button>' +
+          '<button class="var-pill var-max" data-state="max" aria-label="' + t('var_max_label') + '" title="' + t('var_max_title') + ' (+' + parsed.pct + '%)">' + maxVal + '</button>' +
+        '</span>';
+      } else {
+        amountHtml = '<span class="ingredient-amount">' + ing.amount + '</span>';
+      }
+
+      return '<div class="ingredient-row' + (ing.is_optional ? ' optional' : '') + '">' +
+        '<div class="ingredient-row-left">' +
+          '<span class="ingredient-row-name">' + escHtml(window.__lang === 'bg' && ing.name_bg ? ing.name_bg : ing.name) + '</span>' +
+          notes +
+        '</div>' +
+        '<div class="ingredient-row-right">' +
+          badge +
+          amountHtml +
+          '<span class="ingredient-base-amount" onmouseenter="positionTooltip(this)" onmouseleave="hideTooltip(this)"><span class="tooltip-text">' + t('base_recipe_tooltip') + '</span> / ' + ing.base_amount + '</span>' +
+          '<span class="ingredient-unit">g</span>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    const placeholder = document.getElementById('results-placeholder');
+    placeholder.style.display = 'none';
+    placeholder.innerHTML =
+      '<span class="results-placeholder-icon" aria-hidden="true">🍸</span>' +
+      '<p>' + t('results_placeholder') + '</p>';
+    const panel = document.getElementById('results');
+    panel.classList.add('show');
+  }
+
+  function parseVariation(notes) {
+    if (!notes) return { pct: 0 };
+    const m = notes.match(/±(\d+)%/);
+    return m ? { pct: parseInt(m[1], 10) } : { pct: 0 };
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function positionTooltip(el) {
+    const tip = el.querySelector('.tooltip-text');
+    if (!tip) return;
+    const rect = el.getBoundingClientRect();
+    tip.style.setProperty('--tooltip-top', (rect.top - 8) + 'px');
+    tip.style.setProperty('--tooltip-left', (rect.left + rect.width / 2) + 'px');
+    tip.style.opacity = '1';
+    tip.style.visibility = 'visible';
+  }
+
+  function hideTooltip(el) {
+    const tip = el.querySelector('.tooltip-text');
+    if (!tip) return;
+    tip.style.opacity = '0';
+    tip.style.visibility = 'hidden';
+  }
+
+  function debounce(fn, ms) {
+    let timer;
+    return function(...args) { clearTimeout(timer); timer = setTimeout(() => fn.apply(this, args), ms); };
+  }
+
+  const debouncedCalculate = debounce(calculateLocally, 120);
+
+  ['volume', 'input_spirit_abv', 'target_abv', 'still_yield', 'maceration_abv'].forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener('input', debouncedCalculate);
+    }
+  });
+
+  document.getElementById('ingredient-list').addEventListener('click', (e) => {
+    const pill = e.target.closest('.var-pill');
+    if (!pill) return;
+    e.stopPropagation();
+    const wrap = pill.closest('.variation-pills');
+    wrap.querySelectorAll('.var-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('input[name="spirit_type"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      const yieldInput = document.getElementById('still_yield');
+      const abvLabel = document.getElementById('pb-abv-label');
+      if (e.target.value === 'home') {
+        yieldInput.value = 65;
+        abvLabel.textContent = t('hearts_cut_abv');
+      } else {
+        yieldInput.value = 85;
+        abvLabel.textContent = t('input_spirit_abv');
+      }
+      calculateLocally();
+    });
+  });
+});
+
+  // Mode switching
+  document.getElementById('mode-compound').addEventListener('click', function() {
+    setMode('compound');
+    saveState();
+  });
+
+  document.getElementById('mode-distill').addEventListener('click', function() {
+    setMode('distill');
+    saveState();
+    if (!document.getElementById('still-dropdown-name').textContent ||
+        document.getElementById('still-dropdown-name').textContent === t('still_select')) {
+      selectStill('vevor');
+    }
+    calculateDistill();
+  });
+
+  document.getElementById('still-dropdown-toggle').addEventListener('click', toggleStillDropdown);
+
+  document.addEventListener('click', function(e) {
+    var dd = document.getElementById('still-dropdown');
+    if (dd && !dd.contains(e.target)) {
+      closeStillDropdown();
+    }
+  });
+
+   // Still presets
+  var STILL_PRESETS = {
+    'vevor':      { nameKey: 'still_vevor_3l',    descKey: 'still_desc_vevor',    image: '{% static "calculator/images/still-vevor.jpg" %}', wash_volume: 3,   wash_abv: 10, collection_abv: 63, distill_target_abv: 40 },
+    'selski-100': { nameKey: 'still_selski_100',  descKey: 'still_desc_selski_100', image: '{% static "calculator/images/still-selski.jpg" %}', wash_volume: 100, wash_abv: 8,  collection_abv: 63, distill_target_abv: 40 },
+    'selski-200': { nameKey: 'still_selski_200',  descKey: 'still_desc_selski_200', image: '{% static "calculator/images/still-selski.jpg" %}', wash_volume: 200, wash_abv: 8,  collection_abv: 63, distill_target_abv: 40 },
+    'selski-300': { nameKey: 'still_selski_300',  descKey: 'still_desc_selski_300', image: '{% static "calculator/images/still-selski.jpg" %}', wash_volume: 300, wash_abv: 8,  collection_abv: 63, distill_target_abv: 40 }
+  };
+
+  function renderStillDropdown() {
+    var menu = document.getElementById('still-dropdown-menu');
+    if (!menu) return;
+    menu.innerHTML = '';
+    Object.keys(STILL_PRESETS).forEach(function(key) {
+      var p = STILL_PRESETS[key];
+      var li = document.createElement('li');
+      li.className = 'still-dropdown-item';
+      li.setAttribute('role', 'option');
+      li.setAttribute('data-still', key);
+      li.innerHTML = '<div class="still-dropdown-thumb"><img src="' + p.image + '" alt=""></div>' +
+        '<div class="still-dropdown-text">' +
+          '<span class="still-dropdown-name">' + t(p.nameKey) + '</span>' +
+          '<span class="still-dropdown-desc">' + t(p.descKey) + '</span>' +
+        '</div>';
+      li.addEventListener('click', function() { selectStill(key); });
+      menu.appendChild(li);
+    });
+  }
+
+  function selectStill(presetKey) {
+    var preset = STILL_PRESETS[presetKey];
+    if (!preset) return;
+
+    document.getElementById('still-dropdown-name').textContent = t(preset.nameKey);
+    document.getElementById('still-dropdown-desc').textContent = t(preset.descKey);
+    document.getElementById('still-dropdown-thumb').innerHTML = '<img src="' + preset.image + '" alt="">';
+
+    document.querySelectorAll('.still-dropdown-item').forEach(function(item) {
+      item.classList.toggle('active', item.dataset.still === presetKey);
+    });
+
+    document.getElementById('wash_volume').value = preset.wash_volume;
+    document.getElementById('wash_abv').value = preset.wash_abv;
+    document.getElementById('collection_abv').value = preset.collection_abv;
+    document.getElementById('distill_target_abv').value = preset.distill_target_abv;
+
+    closeStillDropdown();
+    saveState();
+    calculateDistill();
+  }
+
+  function openStillDropdown() {
+    var menu = document.getElementById('still-dropdown-menu');
+    var toggle = document.getElementById('still-dropdown-toggle');
+    menu.removeAttribute('hidden');
+    toggle.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeStillDropdown() {
+    var menu = document.getElementById('still-dropdown-menu');
+    var toggle = document.getElementById('still-dropdown-toggle');
+    menu.setAttribute('hidden', '');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleStillDropdown() {
+    var menu = document.getElementById('still-dropdown-menu');
+    if (menu.hasAttribute('hidden')) {
+      openStillDropdown();
+    } else {
+      closeStillDropdown();
+    }
+  }
+
+  // Distill calculations
+  function calculateDistill() {
+    const washVolume = parseFloat(document.getElementById('wash_volume').value);
+    const washAbv = parseFloat(document.getElementById('wash_abv').value);
+    const collectionAbv = parseFloat(document.getElementById('collection_abv').value);
+    const targetAbv = parseFloat(document.getElementById('distill_target_abv').value);
+
+    if (!washVolume || washVolume <= 0) return;
+    if (!washAbv || washAbv <= 0) return;
+    if (!collectionAbv || collectionAbv <= 0) return;
+    if (!targetAbv || targetAbv <= 0) return;
+
+    const pureAlcohol = Math.round(washVolume * washAbv / 100 * 100) / 100;
+    const expectedDistillate = Math.round((pureAlcohol / (collectionAbv / 100)) * 100) / 100;
+    const waterToProof = Math.round((expectedDistillate * (collectionAbv / targetAbv - 1)) * 100) / 100;
+
+    document.getElementById('d-pure-alcohol').textContent = pureAlcohol.toFixed(2);
+    document.getElementById('d-expected-distillate').textContent = expectedDistillate.toFixed(2);
+    document.getElementById('d-water-to-proof').textContent = waterToProof > 0 ? waterToProof.toFixed(2) : '0.00';
+    document.getElementById('d-batches-needed').textContent = '1';
+
+    const placeholder = document.getElementById('distill-results-placeholder');
+    placeholder.style.display = 'none';
+    const panel = document.getElementById('distill-results');
+    panel.classList.add('show');
+  }
+
+  const debouncedDistill = debounce(calculateDistill, 120);
+  ['wash_volume', 'wash_abv', 'collection_abv', 'distill_target_abv'].forEach(id => {
+    document.getElementById(id).addEventListener('input', debouncedDistill);
+  });
+
+  window.addEventListener('load', () => {
+    onRecipeChange();
+    renderStillDropdown();
+    restoreState();
+  });
+
+  document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+</script>
+</body>
+</html>
