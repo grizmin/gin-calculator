@@ -10,7 +10,7 @@ on:
       deploy_to_dockerhub:
         description: 'Deploy to Docker Hub?'
         type: boolean
-        default: false
+        default: true # if it makes it to the main branch, we want to deploy it by default
 
 env:
   IMAGE_NAME: gin-calculator
